@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Tian Li's Dev</title><link>/</link><description></description><atom:link href="/feeds/tian-li.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 24 Jul 2014 00:00:00 -0700</lastBuildDate><item><title>SaltStack 学习笔记</title><link>/articles/saltstack-xue-xi-bi-ji</link><description>&lt;h1&gt;SaltStack 学习笔记&lt;/h1&gt;
-&lt;h2&gt;基本概念&lt;/h2&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Tian Li's Dev</title><link>/</link><description></description><atom:link href="/feeds/tian-li.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 24 Jul 2014 00:00:00 -0700</lastBuildDate><item><title>SaltStack 学习笔记</title><link>/articles/saltstack-xue-xi-bi-ji</link><description>&lt;h3&gt;基本概念&lt;/h3&gt;
+&lt;blockquote&gt;
 &lt;ul&gt;
 &lt;li&gt;Salt Master&lt;/li&gt;
 &lt;li&gt;Salt Minion&lt;/li&gt;
@@ -9,8 +9,10 @@
 &lt;li&gt;grains&lt;/li&gt;
 &lt;li&gt;pillar&lt;/li&gt;
 &lt;/ul&gt;
+&lt;/blockquote&gt;
 &lt;hr /&gt;
-&lt;h2&gt;配置管理&lt;/h2&gt;
+&lt;h3&gt;配置管理&lt;/h3&gt;
+&lt;hr /&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;master配置文件: /etc/salt/master :&lt;/p&gt;
