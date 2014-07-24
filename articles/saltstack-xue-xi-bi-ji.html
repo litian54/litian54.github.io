@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:og="http://ogp.me/ns#"
+      xmlns:fb="https://www.facebook.com/2008/fbml">
+<head>
+    <title>SaltStack 学习笔记 - Tian Li's Dev</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <!-- Open Graph tags -->
+        <meta property="og:site_name" content="Tian Li's Dev" />
+            <meta property="og:type" content="article"/>
+            <meta property="og:title" content="SaltStack 学习笔记"/>
+            <meta property="og:url" content="/articles/saltstack-xue-xi-bi-ji"/>
+            <meta property="og:description" content="SaltStack 学习笔记 基本概念 Salt Master Salt Minion targeting nodegroup grains pillar 配置管理 master配置文件: /etc/salt/master : example 注意file_root设定(default: /srv/salt/): ##### Master file_roots configuration: file_roots: base: - /srv/salt/base dev: - /srv/salt/dev qa: - /srv/salt/qa prod: - /srv/salt/prod minion配置文件: /etc/salt/minion: example 根目录(/srv/salt) top ..."/>
+            <meta property="article:published_time" content="2014-07-24" />
+                <meta property="article:section" content="work" />
+                <meta property="article:tag" content="saltsatck" />
+                <meta property="article:author" content="Tian Li" />
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="/theme/css/bootstrap.min.css" type="text/css"/>
+    <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
+
+
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">
+Tian Li's Dev            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/aboutme.html">About Me</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/articles/saltstack-xue-xi-bi-ji"
+                       rel="bookmark"
+                       title="Permalink to SaltStack 学习笔记">
+                        SaltStack 学习笔记
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2014-07-24T00:00:00"> Thu 24 July 2014</time>
+    </span>
+            <span class="label label-default">By</span>
+            <a href="/author/tian-li.html"><i class="fa fa-user"></i> Tian Li</a>
+
+        <span class="label label-default">Category</span>
+        <a href="/category/work.html">work</a>
+
+
+<span class="label label-default">Tags</span>
+	<a href="/tag/saltsatck.html">saltsatck</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <h1>SaltStack 学习笔记</h1>
+<h2>基本概念</h2>
+<ul>
+<li>Salt Master</li>
+<li>Salt Minion</li>
+<li>targeting</li>
+<li>nodegroup</li>
+<li>grains</li>
+<li>pillar</li>
+</ul>
+<hr />
+<h2>配置管理</h2>
+<ul>
+<li>
+<p>master配置文件: /etc/salt/master :</p>
+<blockquote>
+<p><a href="http://docs.saltstack.com/en/latest/ref/configuration/examples.html#example-minion-configuration-file" title="example">example</a>
+    <em>注意file_root设定(default: /srv/salt/):</em>
+    ##### Master file_roots configuration:
+            file_roots:</p>
+</blockquote>
+<div class="highlight"><pre>        <span class="nl">base:</span>
+            <span class="o">-</span> <span class="o">/</span><span class="n">srv</span><span class="o">/</span><span class="n">salt</span><span class="o">/</span><span class="n">base</span>
+        <span class="nl">dev:</span>
+            <span class="o">-</span> <span class="o">/</span><span class="n">srv</span><span class="o">/</span><span class="n">salt</span><span class="o">/</span><span class="n">dev</span>
+        <span class="nl">qa:</span>
+            <span class="o">-</span> <span class="o">/</span><span class="n">srv</span><span class="o">/</span><span class="n">salt</span><span class="o">/</span><span class="n">qa</span>
+        <span class="nl">prod:</span>
+            <span class="o">-</span> <span class="o">/</span><span class="n">srv</span><span class="o">/</span><span class="n">salt</span><span class="o">/</span><span class="n">prod</span>
+</pre></div>
+
+
+<ul>
+<li>minion配置文件: /etc/salt/minion:<blockquote>
+<p><a href="http://docs.saltstack.com/en/latest/ref/configuration/examples.html#example-minion-configuration-file" title="example">example</a></p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>
+<p>根目录(/srv/salt)</p>
+</li>
+<li>
+<p>top.sls:</p>
+<ul>
+<li>master通过配置中file_root的路径去找相应文件夹的top.sls来加载state</li>
+<li>SaltStack通过top.sls加载所有state配置<ul>
+<li>
+<p>例如, 对应上文master的file_root配置, top.sls为:</p>
+<div class="highlight"><pre><span class="nl">base:</span>
+    <span class="sc">&#39;*&#39;</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">global</span>
+<span class="nl">dev:</span>
+    <span class="err">&#39;</span><span class="n">webserver</span><span class="o">*</span><span class="n">dev</span><span class="o">*</span><span class="err">&#39;</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">webserver</span>
+    <span class="err">&#39;</span><span class="n">db</span><span class="o">*</span><span class="n">dev</span><span class="o">*</span><span class="err">&#39;</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">db</span>
+<span class="nl">qa:</span>
+    <span class="err">&#39;</span><span class="n">webserver</span><span class="o">*</span><span class="n">qa</span><span class="o">*</span><span class="err">&#39;</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">webserver</span>
+    <span class="err">&#39;</span><span class="n">db</span><span class="o">*</span><span class="n">qa</span><span class="o">*</span><span class="err">&#39;</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">db</span>
+<span class="nl">prod:</span>
+    <span class="err">&#39;</span><span class="n">webserver</span><span class="o">*</span><span class="n">prod</span><span class="o">*</span><span class="err">&#39;</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">webserver</span>
+    <span class="err">&#39;</span><span class="n">db</span><span class="o">*</span><span class="n">prod</span><span class="o">*</span><span class="err">&#39;</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">db</span>
+<span class="o">*</span> <span class="n">top</span><span class="err">被编译执行的顺序：</span>
+</pre></div>
+
+
+<ul>
+<li>
+<p>/srv/salt/base/top.sls和/srv/salt/dev/top.sls中都有关于dev的配置，那么/srv/salt/dev/top.sls中的将被忽略.</p>
+</li>
+<li>
+<p>/srv/salt/dev/top.sls和/srv/salt/qa/top.sls中都有关于qa的配置, 后者会被执行, 因为系统会匹配环境名和qa配置.</p>
+</li>
+<li>
+<p>如果以上匹配没找到，则按alphabetical order进行匹配.</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>salt-call state.highstate -l debug 测试并得到错误输出</p>
+</li>
+<li>
+<p>最后(完成state创建或者修改), 将master加载的states发到各minion去执行：</p>
+<div class="highlight"><pre><span class="c"># salt &#39;*&#39; state.highstate -v</span>
+</pre></div>
+
+
+</li>
+</ul>
+<hr />
+<ul>
+<li>state配置<ul>
+<li>
+<p>基本配置：</p>
+<div class="highlight"><pre><span class="nx">apache</span><span class="o">:</span>                 <span class="err">#</span> <span class="nx">ID</span> <span class="nx">declaration</span>
+    <span class="nx">pkg</span><span class="o">:</span>                <span class="err">#</span> <span class="nx">state</span> <span class="nx">declaration</span>
+        <span class="o">-</span> <span class="nx">installed</span>     <span class="err">#</span> <span class="kd">function</span> <span class="nx">declaration</span>
+<span class="o">*</span> <span class="err">使用子目录：</span>
+<span class="o">&gt;</span><span class="nx">top</span><span class="p">.</span><span class="nx">sls</span><span class="err">中</span><span class="nx">webserver</span><span class="p">.</span><span class="nx">dev</span><span class="err">用来表示子目录</span><span class="nx">webserver</span><span class="o">/</span><span class="nx">dev</span><span class="p">.</span><span class="nx">sls</span>
+<span class="o">*</span> <span class="nx">init</span><span class="p">.</span><span class="nx">sls</span> <span class="err">在一个子目录里面表示引导文件，也就表示子目录本身，</span> <span class="err">所以&quot;</span><span class="nx">webserver</span><span class="o">/</span><span class="nx">init</span><span class="p">.</span><span class="nx">sls</span><span class="s1">&#39;&#39;</span> <span class="err">就是表示</span><span class="s1">&#39;&#39;</span><span class="nx">webserver</span><span class="s1">&#39;&#39;</span><span class="p">.</span>
+</pre></div>
+
+
+<ul>
+<li>例如，在上面apache配置中，为了区分不同系统所提供不同的apache版本:</li>
+</ul>
+<p>apache/init.sls</p>
+<div class="highlight"><pre>    <span class="nx">apache</span><span class="o">:</span>
+        <span class="nx">pkg</span><span class="p">.</span><span class="nx">installed</span><span class="o">:</span>
+        <span class="p">{</span><span class="o">%</span> <span class="k">if</span> <span class="nx">grains</span><span class="cp">[</span><span class="s1">&#39;os&#39;</span><span class="cp">]</span> <span class="o">==</span> <span class="s1">&#39;RedHat&#39;</span><span class="o">%</span><span class="p">}</span>
+            <span class="o">-</span> <span class="nx">name</span><span class="o">:</span> <span class="nx">httpd</span>
+        <span class="p">{</span><span class="o">%</span> <span class="nx">endif</span> <span class="o">%</span><span class="p">}</span>
+        <span class="nx">service</span><span class="p">.</span><span class="nx">running</span><span class="o">:</span>
+        <span class="p">{</span><span class="o">%</span> <span class="k">if</span> <span class="nx">grains</span><span class="cp">[</span><span class="s1">&#39;os&#39;</span><span class="cp">]</span> <span class="o">==</span> <span class="s1">&#39;RedHat&#39;</span><span class="o">%</span><span class="p">}</span>
+            <span class="o">-</span> <span class="nx">name</span><span class="o">:</span> <span class="nx">httpd</span>
+        <span class="p">{</span><span class="o">%</span> <span class="nx">endif</span> <span class="o">%</span><span class="p">}</span>
+            <span class="o">-</span> <span class="nx">watch</span><span class="o">:</span>
+            <span class="o">-</span> <span class="nx">pkg</span><span class="o">:</span> <span class="nx">apache</span>
+            <span class="o">-</span> <span class="nx">file</span><span class="o">:</span> <span class="err">/etc/httpd/conf/httpd.conf</span>
+            <span class="o">-</span> <span class="nx">user</span><span class="o">:</span> <span class="nx">apache</span>
+            <span class="err">#</span> <span class="nx">add</span> <span class="nx">file</span>
+    <span class="o">/</span><span class="kd">var</span><span class="err">/www/index.html:        # ID declaration</span>
+        <span class="nx">file</span><span class="o">:</span>                   <span class="err">#</span> <span class="nx">state</span> <span class="nx">declaration</span>
+            <span class="o">-</span> <span class="nx">managed</span>           <span class="err">#</span> <span class="kd">function</span>
+            <span class="o">-</span> <span class="nx">source</span><span class="o">:</span> <span class="nx">salt</span><span class="o">:</span><span class="c1">//webserver/index.html  # function arg</span>
+            <span class="o">-</span> <span class="nx">require</span><span class="o">:</span>              <span class="err">#</span> <span class="nx">requisite</span> <span class="nx">declaration</span>
+                <span class="o">-</span> <span class="nx">pkg</span><span class="o">:</span> <span class="nx">apache</span>           <span class="err">#</span> <span class="nx">requisite</span> <span class="nx">reference</span>
+<span class="o">*</span> <span class="err">如果同时存在</span><span class="nx">webserver</span><span class="p">.</span><span class="nx">sls</span><span class="err">和</span><span class="nx">webserver</span><span class="p">.</span><span class="nx">init</span><span class="p">.</span><span class="nx">sls</span><span class="err">，后者被忽略</span>
+<span class="o">*</span> <span class="nx">require</span><span class="err">和</span><span class="nx">watch</span><span class="o">:</span>
+</pre></div>
+
+
+<ul>
+<li>service(state declaration)支持 watch.</li>
+<li>
+<p>例如, 如apache配置文件发生变化时，apache重启:</p>
+<div class="highlight"><pre><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">httpd</span><span class="o">/</span><span class="n">extra</span><span class="o">/</span><span class="n">httpd</span><span class="o">-</span><span class="n">vhosts</span><span class="p">.</span><span class="n">conf</span><span class="o">:</span>
+    <span class="nl">file:</span>
+        <span class="o">-</span> <span class="n">managed</span>
+        <span class="o">-</span> <span class="n">source</span><span class="o">:</span> <span class="n">salt</span><span class="o">:</span><span class="c1">//webserver/httpd-vhosts.conf</span>
+<span class="nl">apache:</span>
+    <span class="nl">pkg:</span>
+        <span class="o">-</span> <span class="n">installed</span>
+    <span class="nl">service:</span>
+        <span class="o">-</span> <span class="n">running</span>
+        <span class="o">-</span> <span class="n">watch</span><span class="o">:</span>
+            <span class="o">-</span> <span class="n">file</span><span class="o">:</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">httpd</span><span class="o">/</span><span class="n">extra</span><span class="o">/</span><span class="n">httpd</span><span class="o">-</span><span class="n">vhosts</span><span class="p">.</span><span class="n">conf</span>
+        <span class="o">-</span> <span class="n">require</span><span class="o">:</span>
+            <span class="o">-</span> <span class="n">pkg</span><span class="o">:</span> <span class="n">apache</span>
+<span class="o">*</span> <span class="n">templating</span><span class="err">模板</span>
+    <span class="o">*</span> <span class="err">支持</span><span class="n">Jinja2</span>
+    <span class="o">*</span> <span class="n">Grains</span> <span class="err">模板</span><span class="o">:</span>
+</pre></div>
+
+
+<ul>
+<li>derive information about the underlying system</li>
+<li>grains are bits of information loaded when the salt minion starts</li>
+</ul>
+</li>
+<li>
+<p>grains are <strong>static</strong></p>
+</li>
+<li>
+<p>列出grains：</p>
+<div class="highlight"><pre><span class="n">salt</span> <span class="sc">&#39;*&#39;</span> <span class="n">grains</span><span class="p">.</span><span class="n">ls</span>
+<span class="n">salt</span> <span class="sc">&#39;*&#39;</span> <span class="n">grains</span><span class="p">.</span><span class="n">items</span>
+</pre></div>
+
+
+</li>
+<li>
+<p>grains 也可以在minions里设置:</p>
+<div class="highlight"><pre><span class="n">grains</span><span class="o">:</span>
+    <span class="n">roles</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">webserver</span>
+        <span class="o">-</span> <span class="n">memcache</span>
+    <span class="n">deployment</span><span class="o">:</span> <span class="n">datacenter4</span>
+    <span class="n">cabinet</span><span class="o">:</span> <span class="mi">13</span>
+    <span class="n">cab_u</span><span class="o">:</span> <span class="mi">14</span><span class="o">-</span><span class="mi">15</span>
+</pre></div>
+
+
+<ul>
+<li>或者在minion的/etc/salt/grains设置</li>
+</ul>
+</li>
+<li>
+<p>在top(pillar中的top.sls)中匹配grains:</p>
+<div class="highlight"><pre><span class="err">&#39;</span><span class="n">node_type</span><span class="o">:</span><span class="n">web</span><span class="err">&#39;</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">match</span><span class="o">:</span> <span class="n">grain</span>
+    <span class="o">-</span> <span class="n">webserver</span>
+<span class="err">&#39;</span><span class="n">node_type</span><span class="o">:</span><span class="n">postgres</span><span class="err">&#39;</span><span class="o">:</span>
+    <span class="o">-</span> <span class="n">match</span><span class="o">:</span> <span class="n">grain</span>
+    <span class="o">-</span> <span class="n">database</span>
+</pre></div>
+
+
+<p>或者用Jinja:</p>
+<div class="highlight"><pre><span class="x">    </span><span class="cp">{%</span> <span class="k">set</span> <span class="nv">node_type</span> <span class="o">=</span> <span class="nv">salt</span><span class="o">[</span><span class="s1">&#39;grains.get&#39;</span><span class="o">](</span><span class="s1">&#39;node_type&#39;</span><span class="o">,</span> <span class="s1">&#39;&#39;</span><span class="o">)</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">node_type</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">        &#39;node_type:</span><span class="cp">{{</span> <span class="nv">self</span> <span class="cp">}}</span><span class="x">&#39;:</span>
+<span class="x">                - match: grain</span>
+<span class="x">                - </span><span class="cp">{{</span> <span class="nv">self</span> <span class="cp">}}</span><span class="x"></span>
+<span class="x">    </span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">    * 在模板中使用模块(**未完成**）</span>
+<span class="x">    * extend declaration:</span>
+</pre></div>
+
+
+<p>apache/apache.sls</p>
+<div class="highlight"><pre>    <span class="nl">apache:</span>
+        <span class="n">pkg</span><span class="p">.</span><span class="n">installed</span>
+</pre></div>
+
+
+<p>apache/mywebsite.sls:</p>
+<div class="highlight"><pre>    <span class="nl">include:</span>
+        <span class="o">-</span> <span class="n">apache</span><span class="p">.</span><span class="n">apache</span>
+
+    <span class="nl">extend:</span>
+        <span class="nl">apache:</span>
+            <span class="nl">service:</span>
+                <span class="o">-</span> <span class="n">running</span>
+                <span class="o">-</span> <span class="n">watch</span><span class="o">:</span>
+                    <span class="o">-</span> <span class="n">file</span><span class="o">:</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">httpd</span><span class="o">/</span><span class="n">extra</span><span class="o">/</span><span class="n">httpd</span><span class="o">-</span><span class="n">vhosts</span><span class="p">.</span><span class="n">conf</span>
+
+    <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">httpd</span><span class="o">/</span><span class="n">extra</span><span class="o">/</span><span class="n">httpd</span><span class="o">-</span><span class="n">vhosts</span><span class="p">.</span><span class="n">conf</span><span class="o">:</span>
+        <span class="n">file</span><span class="p">.</span><span class="n">managed</span><span class="o">:</span>
+             <span class="o">-</span> <span class="n">source</span><span class="o">:</span> <span class="n">salt</span><span class="o">:</span><span class="c1">//apache/httpd-vhosts.conf</span>
+    <span class="o">*</span> <span class="n">inlcude</span> <span class="n">declaration</span><span class="o">:</span>
+</pre></div>
+
+
+<p>python/python-libs.sls:</p>
+<div class="highlight"><pre>    <span class="n">python</span><span class="o">-</span><span class="n">dateutil</span><span class="o">:</span>
+        <span class="n">pkg</span><span class="p">.</span><span class="n">installed</span>
+</pre></div>
+
+
+<p>python/django.sls:</p>
+<div class="highlight"><pre>    <span class="nl">include:</span>
+        <span class="o">-</span> <span class="n">python</span><span class="p">.</span><span class="n">python</span><span class="o">-</span><span class="n">libs</span>
+
+    <span class="nl">django:</span>
+        <span class="n">pkg</span><span class="p">.</span><span class="n">installed</span><span class="o">:</span>
+            <span class="o">-</span> <span class="n">require</span><span class="o">:</span>
+                <span class="o">-</span> <span class="n">pkg</span><span class="o">:</span> <span class="n">python</span><span class="o">-</span><span class="n">dateutil</span>
+    <span class="o">*</span> <span class="n">name</span> <span class="n">declaration</span><span class="o">:</span>
+</pre></div>
+
+
+<p>apache/mywebsite.sls:</p>
+<div class="highlight"><pre>    <span class="nl">include:</span>
+        <span class="o">-</span> <span class="n">apache</span><span class="p">.</span><span class="n">apache</span>
+
+    <span class="nl">extend:</span>
+        <span class="nl">apache:</span>
+            <span class="nl">service:</span>
+                <span class="o">-</span> <span class="n">running</span>
+                <span class="o">-</span> <span class="n">watch</span><span class="o">:</span>
+                    <span class="o">-</span> <span class="n">file</span><span class="o">:</span> <span class="n">mywebsite</span>
+
+    <span class="nl">mywebsite:</span>
+        <span class="n">file</span><span class="p">.</span><span class="n">managed</span><span class="o">:</span>
+            <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">httpd</span><span class="o">/</span><span class="n">extra</span><span class="o">/</span><span class="n">httpd</span><span class="o">-</span><span class="n">vhosts</span><span class="p">.</span><span class="n">conf</span>
+            <span class="o">-</span> <span class="n">source</span><span class="o">:</span> <span class="n">salt</span><span class="o">:</span><span class="c1">//apache/httpd-vhosts.conf</span>
+</pre></div>
+
+
+<p>我的理解为: 给复杂的"/etc/httpd/extra/httpd-vhosts.conf"起了个别名"mywebsite"
+* names declaration:
+    用一个例子可以解释出names declaration的作用和用法:</p>
+<div class="highlight"><pre>        <span class="p">{</span><span class="o">%</span> <span class="k">for</span> <span class="n">usr</span> <span class="n">in</span> <span class="p">[</span><span class="err">&#39;</span><span class="n">moe</span><span class="sc">&#39;,&#39;</span><span class="n">larry</span><span class="sc">&#39;,&#39;</span><span class="n">curly</span><span class="err">&#39;</span><span class="p">]</span> <span class="o">%</span><span class="p">}</span>
+        <span class="p">{{</span> <span class="n">usr</span> <span class="p">}}</span><span class="o">:</span>
+            <span class="n">user</span><span class="p">.</span><span class="n">present</span>
+        <span class="p">{</span><span class="o">%</span> <span class="n">endfor</span> <span class="o">%</span><span class="p">}</span>
+<span class="n">render</span><span class="err">后内容如下</span><span class="o">:</span>
+
+        <span class="nl">moe:</span>
+            <span class="n">user</span><span class="p">.</span><span class="n">present</span>
+        <span class="nl">larry:</span>
+            <span class="n">user</span><span class="p">.</span><span class="n">present</span>
+        <span class="nl">curly:</span>
+            <span class="n">user</span><span class="p">.</span><span class="n">present</span>
+<span class="err">用</span><span class="n">names</span> <span class="n">declaration</span><span class="o">:</span>
+
+    <span class="nl">stooges:</span>
+        <span class="n">user</span><span class="p">.</span><span class="n">present</span><span class="o">:</span>
+            <span class="o">-</span> <span class="n">names</span><span class="o">:</span>
+                <span class="o">-</span> <span class="n">moe</span>
+                <span class="o">-</span> <span class="n">larry</span>
+                <span class="o">-</span> <span class="n">curly</span>
+</pre></div>
+
+
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr />
+<p>配置pillar
+        pillar是配置在master上，用于更为安全的发布数据(高敏感数据)到指定相关的minions.
+1. 在master的配置文件中设定pillar_roots，并创建pillar文件夹：
+        # mkdir /srv/pillar
+2. 创建top.sls
+3. 创建pillar的.sls文件
+4. pillar is just a Python dict, so Python dict methods such as get and items can be used.</p>
+<hr />
+<p>未完待续.....</p>
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
+
+        </div>
+
+        <div class="col-sm-3 well well-sm" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="http://github.com/litian54"><i class="fa fa-github-square fa-lg"></i> github</a></li>
+                    <li class="list-group-item"><a href="www.linkedin.com/pub/tian-li/85/9a3/70b/"><i class="fa fa-linkedin-square fa-lg"></i> linkedin</a></li>
+                    <li class="list-group-item"><a href="https://www.facebook.com/li.tian.58555"><i class="fa fa-facebook-square fa-lg"></i> Facebook</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/u/2128427201"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+                <li class="list-group-item"><a href="/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="/category/.html">
+                                <i class="fa fa-folder-open fa-lg"></i> 
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="/category/work.html">
+                                <i class="fa fa-folder-open fa-lg"></i> work
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="list-group-item"><a href="/"><h4><i class="fa fa-tags fa-lg"></i><span class="icon-label">Tags</span></h4></a>
+                    <ul class="list-group list-inline tagcloud" id="tags">
+                        <li class="list-group-item tag-4">
+                            <a href="/tag/.html">
+                                
+                            </a>
+                        </li>
+                        <li class="list-group-item tag-4">
+                            <a href="/tag/saltsatck.html">
+                                saltsatck
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="http://getpelican.com/" target="_blank">
+                Pelican
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://python.org/" target="_blank">
+                Python.org
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://jinja.pocoo.org/" target="_blank">
+                Jinja2
+            </a>
+        </li>
+      </ul>
+    </li>
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2014 Tian Li
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="/theme/js/respond.min.js"></script>
+
+</body>
+</html>

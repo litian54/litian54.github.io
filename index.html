@@ -57,6 +57,56 @@ Tian Li's Dev            </a>
         <div class="col-sm-9">
 
             <article>
+                <h2><a href="/articles/saltstack-xue-xi-bi-ji">SaltStack 学习笔记</a></h2>
+                <div class="summary"><h1>SaltStack 学习笔记</h1>
+<h2>基本概念</h2>
+<ul>
+<li>Salt Master</li>
+<li>Salt Minion</li>
+<li>targeting</li>
+<li>nodegroup</li>
+<li>grains</li>
+<li>pillar</li>
+</ul>
+<hr />
+<h2>配置管理</h2>
+<ul>
+<li>
+<p>master配置文件: /etc/salt/master :</p>
+<blockquote>
+<p><a href="http://docs.saltstack.com/en/latest/ref/configuration/examples.html#example-minion-configuration-file" title="example">example</a>
+    <em>注意file_root设定(default: /srv/salt/):</em>
+    ##### Master file_roots configuration:
+            file_roots:</p>
+</blockquote>
+<div class="highlight"><pre>        <span class="nl">base:</span>
+            <span class="o">-</span> <span class="o">/</span><span class="n">srv</span><span class="o">/</span><span class="n">salt</span><span class="o">/</span><span class="n">base</span>
+        <span class="nl">dev:</span>
+            <span class="o">-</span> <span class="o">/</span><span class="n">srv</span><span class="o">/</span><span class="n">salt</span><span class="o">/</span><span class="n">dev</span>
+        <span class="nl">qa:</span>
+            <span class="o">-</span> <span class="o">/</span><span class="n">srv</span><span class="o">/</span><span class="n">salt</span><span class="o">/</span><span class="n">qa</span>
+        <span class="nl">prod:</span>
+            <span class="o">-</span> <span class="o">/</span><span class="n">srv</span><span class="o">/</span><span class="n">salt</span><span class="o">/</span><span class="n">prod</span>
+</pre></div>
+
+
+<ul>
+<li>minion配置文件: /etc/salt/minion:<blockquote>
+<p><a href="http://docs.saltstack.com/en/latest/ref/configuration/examples.html#example-minion-configuration-file" title="example">example</a></p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>
+<p>根目录(/srv/salt)</p>
+</li>
+<li>
+<p>top ...</p></li></ul>
+                    <a class="btn btn-default btn-xs" href="/articles/saltstack-xue-xi-bi-ji">more ...</a>
+                </div>
+            </article>
+            <hr/>
+            <article>
                 <h2><a href="/articles/hello-world-ha-lou-wo-de">Hello, World! 哈喽, 沃德！</a></h2>
                 <div class="summary"><p>Begin to write something here about my dev life...keep moving!</p>
                     <a class="btn btn-default btn-xs" href="/articles/hello-world-ha-lou-wo-de">more ...</a>
@@ -88,6 +138,11 @@ Tian Li's Dev            </a>
                                 <i class="fa fa-folder-open fa-lg"></i> 
                             </a>
                         </li>
+                        <li class="list-group-item">
+                            <a href="/category/work.html">
+                                <i class="fa fa-folder-open fa-lg"></i> work
+                            </a>
+                        </li>
                     </ul>
                 </li>
 
@@ -96,6 +151,11 @@ Tian Li's Dev            </a>
                         <li class="list-group-item tag-4">
                             <a href="/tag/.html">
                                 
+                            </a>
+                        </li>
+                        <li class="list-group-item tag-4">
+                            <a href="/tag/saltsatck.html">
+                                saltsatck
                             </a>
                         </li>
                     </ul>
