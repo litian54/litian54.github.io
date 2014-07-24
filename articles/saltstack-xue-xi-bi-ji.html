@@ -139,10 +139,10 @@ Tian Li's Dev            </a>
 <p>top.sls:</p>
 <ul>
 <li>master通过配置中file_root的路径去找相应文件夹的top.sls来加载state</li>
-<li>SaltStack通过top.sls加载所有state配置<ul>
 <li>
-<p>例如, 对应上文master的file_root配置, top.sls为:</p>
-<div class="highlight"><pre><span class="nl">base:</span>
+<p>SaltStack通过top.sls加载所有state配置</p>
+<ul>
+<li>例如, 对应上文master的file_root配置, top.sls为:<div class="highlight"><pre><span class="nl">base:</span>
     <span class="sc">&#39;*&#39;</span><span class="o">:</span>
         <span class="o">-</span> <span class="n">global</span>
 <span class="nl">dev:</span>
@@ -160,10 +160,14 @@ Tian Li's Dev            </a>
         <span class="o">-</span> <span class="n">webserver</span>
     <span class="err">&#39;</span><span class="n">db</span><span class="o">*</span><span class="n">prod</span><span class="o">*</span><span class="err">&#39;</span><span class="o">:</span>
         <span class="o">-</span> <span class="n">db</span>
-<span class="o">*</span> <span class="n">top</span><span class="err">被编译执行的顺序：</span>
 </pre></div>
 
 
+</li>
+</ul>
+</li>
+<li>
+<p>top被编译执行的顺序：</p>
 <ul>
 <li>
 <p>/srv/salt/base/top.sls和/srv/salt/dev/top.sls中都有关于dev的配置，那么/srv/salt/dev/top.sls中的将被忽略.</p>
@@ -178,10 +182,12 @@ Tian Li's Dev            </a>
 </li>
 </ul>
 </li>
-</ul>
-</li>
 <li>
-<p>salt-call state.highstate -l debug 测试并得到错误输出</p>
+<p>测试并得到错误输出</p>
+<div class="highlight"><pre><span class="c"># salt-call state.highstate -l debug</span>
+</pre></div>
+
+
 </li>
 <li>
 <p>最后(完成state创建或者修改), 将master加载的states发到各minion去执行：</p>
@@ -379,6 +385,7 @@ Tian Li's Dev            </a>
         <span class="p">{{</span> <span class="n">usr</span> <span class="p">}}</span><span class="o">:</span>
             <span class="n">user</span><span class="p">.</span><span class="n">present</span>
         <span class="p">{</span><span class="o">%</span> <span class="n">endfor</span> <span class="o">%</span><span class="p">}</span>
+
 <span class="n">render</span><span class="err">后内容如下</span><span class="o">:</span>
 
         <span class="nl">moe:</span>
@@ -387,6 +394,7 @@ Tian Li's Dev            </a>
             <span class="n">user</span><span class="p">.</span><span class="n">present</span>
         <span class="nl">curly:</span>
             <span class="n">user</span><span class="p">.</span><span class="n">present</span>
+
 <span class="err">用</span><span class="n">names</span> <span class="n">declaration</span><span class="o">:</span>
 
     <span class="nl">stooges:</span>
@@ -405,13 +413,17 @@ Tian Li's Dev            </a>
 </li>
 </ul>
 <hr />
-<p>配置pillar
-        pillar是配置在master上，用于更为安全的发布数据(高敏感数据)到指定相关的minions.
-1. 在master的配置文件中设定pillar_roots，并创建pillar文件夹：
-        # mkdir /srv/pillar
-2. 创建top.sls
-3. 创建pillar的.sls文件
-4. pillar is just a Python dict, so Python dict methods such as get and items can be used.</p>
+<h3>配置pillar</h3>
+<blockquote>
+<p>pillar是配置在master上，用于更为安全的发布数据(高敏感数据)到指定相关的minions.</p>
+</blockquote>
+<ol>
+<li>在master的配置文件中设定pillar_roots，并创建pillar文件夹：
+        # mkdir /srv/pillar</li>
+<li>创建top.sls</li>
+<li>创建pillar的.sls文件</li>
+<li>pillar is just a Python dict, so Python dict methods such as get and items can be used.</li>
+</ol>
 <hr />
 <p>未完待续.....</p>
             </div>
