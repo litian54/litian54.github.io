@@ -378,7 +378,7 @@ Tian Li's Dev            </a>
 </pre></div>
 
 
-<p>我的理解为: 给复杂的"/etc/httpd/extra/httpd-vhosts.conf"起了个别名"mywebsite"
+<p>我的理解为: 给复杂的"/etc/httpd/extra/httpd-vhosts.conf"起了个别名"mywebsite"作为id.
 * names declaration:
     用一个例子可以解释出names declaration的作用和用法:</p>
 <div class="highlight"><pre>        <span class="p">{</span><span class="o">%</span> <span class="k">for</span> <span class="n">usr</span> <span class="n">in</span> <span class="p">[</span><span class="err">&#39;</span><span class="n">moe</span><span class="sc">&#39;,&#39;</span><span class="n">larry</span><span class="sc">&#39;,&#39;</span><span class="n">curly</span><span class="err">&#39;</span><span class="p">]</span> <span class="o">%</span><span class="p">}</span>
@@ -415,7 +415,8 @@ Tian Li's Dev            </a>
 <hr />
 <h3>配置pillar</h3>
 <blockquote>
-<p>pillar是配置在master上，用于更为安全的发布数据(高敏感数据)到指定相关的minions.</p>
+<p>pillar是配置在master上，用于更为安全的发布数据(高敏感数据)到指定相关的minions.
+   我的理解是,实际上就是定义了一堆可以用在states的jinja模板里的静态变量.</p>
 </blockquote>
 <ol>
 <li>在master的配置文件中设定pillar_roots，并创建pillar文件夹：
@@ -424,6 +425,34 @@ Tian Li's Dev            </a>
 <li>创建pillar的.sls文件</li>
 <li>pillar is just a Python dict, so Python dict methods such as get and items can be used.</li>
 </ol>
+<blockquote>
+<p>pillar的使用</p>
+</blockquote>
+<div class="highlight"><pre>    <span class="err">#</span> <span class="o">/</span><span class="n">srv</span><span class="o">/</span><span class="n">pillar</span><span class="o">/</span><span class="n">top</span><span class="p">.</span><span class="n">sls</span>
+    <span class="nl">base:</span>
+        <span class="sc">&#39;*&#39;</span><span class="o">:</span>
+            <span class="o">-</span> <span class="n">users</span>
+
+    <span class="err">#</span> <span class="o">/</span><span class="n">srv</span><span class="o">/</span><span class="n">pillar</span><span class="o">/</span><span class="n">users</span><span class="o">/</span><span class="n">init</span><span class="p">.</span><span class="n">sls</span>
+    <span class="n">users</span><span class="o">-</span><span class="n">data</span><span class="o">:</span>
+        <span class="nl">thatch:</span> <span class="mi">1000</span>
+        <span class="nl">shouse:</span> <span class="mi">1001</span>
+        <span class="nl">utahdave:</span> <span class="mi">1002</span>
+        <span class="nl">redbeard:</span> <span class="mi">1003</span>
+
+    <span class="err">#</span> <span class="o">/</span><span class="n">srv</span><span class="o">/</span><span class="n">salt</span><span class="o">/</span><span class="n">users</span><span class="o">/</span><span class="n">init</span><span class="p">.</span><span class="n">sls</span>
+    <span class="err">#注意</span><span class="p">,</span> <span class="err">这里要使用</span><span class="n">users</span><span class="o">-</span><span class="n">data</span><span class="err">作为字典名因为在</span><span class="o">/</span><span class="n">srv</span><span class="o">/</span><span class="n">pillar</span><span class="o">/</span><span class="n">users</span><span class="o">/</span><span class="n">init</span><span class="p">.</span><span class="n">sls</span><span class="err">是这么定义的</span>
+    <span class="p">{</span><span class="o">%</span> <span class="k">for</span> <span class="n">user</span><span class="p">,</span> <span class="n">uid</span> <span class="n">in</span> <span class="n">pillar</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="err">&#39;</span><span class="n">users</span><span class="o">-</span><span class="n">data</span><span class="err">&#39;</span><span class="p">,</span> <span class="p">{}).</span><span class="n">items</span><span class="p">()</span> <span class="o">%</span><span class="p">}</span>
+    <span class="p">{{</span><span class="n">user</span><span class="p">}}</span><span class="o">:</span>
+        <span class="n">user</span><span class="p">.</span><span class="n">present</span><span class="o">:</span>
+            <span class="o">-</span> <span class="n">uid</span><span class="o">:</span> <span class="p">{{</span><span class="n">uid</span><span class="p">}}</span>
+    <span class="p">{</span><span class="o">%</span> <span class="n">endfor</span> <span class="o">%</span><span class="p">}</span>
+</pre></div>
+
+
+<hr />
+<h3>notes:</h3>
+<p>1.配置中<code>source: salt://webserver/index.html</code> 中<code>salt://</code>指代 "file_root", 如"/srv/salt/"</p>
 <hr />
 <p>未完待续.....</p>
             </div>
