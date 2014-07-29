@@ -452,8 +452,25 @@ Tian Li's Dev            </a>
 
 <hr />
 <h3>notes:</h3>
-<p>1.配置中<code>source: salt://webserver/index.html</code> 中<code>salt://</code>指代 "file_root", 如"/srv/salt/"</p>
+<ul>
+<li>配置中<code>source: salt://webserver/index.html</code> 中<code>salt://</code>指代 "file_root", 如"/srv/salt/"</li>
+<li><strong><em>prereq</em></strong>:
+prereq目前还没搞明白, 不过看例子, 部署新代码的时候用的到.<div class="highlight"><pre><span class="n">graceful</span><span class="o">-</span><span class="n">down</span><span class="o">:</span>
+    <span class="n">cmd</span><span class="p">.</span><span class="n">run</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="n">service</span> <span class="n">apache</span> <span class="n">graceful</span>
+        <span class="o">-</span> <span class="n">prereq</span><span class="o">:</span>
+        <span class="o">-</span> <span class="n">file</span><span class="o">:</span> <span class="n">site</span><span class="o">-</span><span class="n">code</span>
+
+    <span class="n">site</span><span class="o">-</span><span class="n">code</span><span class="o">:</span>
+        <span class="n">file</span><span class="p">.</span><span class="n">recurse</span><span class="o">:</span>
+            <span class="o">-</span> <span class="n">name</span><span class="o">:</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">site_code</span>
+        <span class="o">-</span> <span class="n">source</span><span class="o">:</span> <span class="n">salt</span><span class="o">:</span><span class="c1">//site/code</span>
+</pre></div>
+
+
 <hr />
+</li>
+</ul>
 <p>未完待续.....</p>
             </div>
             <!-- /.entry-content -->
