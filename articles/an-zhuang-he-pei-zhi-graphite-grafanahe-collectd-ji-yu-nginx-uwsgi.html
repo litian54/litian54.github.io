@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:og="http://ogp.me/ns#"
+      xmlns:fb="https://www.facebook.com/2008/fbml">
+<head>
+    <title>安装和配置 graphite, grafana和collectD (基于nginx, uwsgi) - Tian Li's Dev</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <!-- Open Graph tags -->
+        <meta property="og:site_name" content="Tian Li's Dev" />
+            <meta property="og:type" content="article"/>
+            <meta property="og:title" content="安装和配置 graphite, grafana和collectD (基于nginx, uwsgi)"/>
+            <meta property="og:url" content="/articles/an-zhuang-he-pei-zhi-graphite-grafanahe-collectd-ji-yu-nginx-uwsgi"/>
+            <meta property="og:description" content=""/>
+            <meta property="article:published_time" content="2014-09-25" />
+                <meta property="article:section" content="work" />
+                <meta property="article:tag" content="saltsatck" />
+                <meta property="article:author" content="Tian Li" />
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="/theme/css/bootstrap.min.css" type="text/css"/>
+    <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments/native.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
+
+
+</head>
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">
+Tian Li's Dev            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/aboutme.html">About Me</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/articles/an-zhuang-he-pei-zhi-graphite-grafanahe-collectd-ji-yu-nginx-uwsgi"
+                       rel="bookmark"
+                       title="Permalink to 安装和配置 graphite, grafana和collectD (基于nginx, uwsgi)">
+                        安装和配置 graphite, grafana和collectD (基于nginx, uwsgi)
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2014-09-25T00:00:00"> Thu 25 September 2014</time>
+    </span>
+            <span class="label label-default">By</span>
+            <a href="/author/tian-li.html"><i class="fa fa-user"></i> Tian Li</a>
+
+        <span class="label label-default">Category</span>
+        <a href="/category/work.html">work</a>
+
+
+<span class="label label-default">Tags</span>
+	<a href="/tag/saltsatck.html">saltsatck</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <blockquote>
+<p>配置环境：
+Ubuntu 12.04.4 LTS on AWS EC2, python2.7.3</p>
+</blockquote>
+<hr />
+<h3>安装和配置 graphite</h3>
+<h4>下载源码包</h4>
+<div class="highlight"><pre>    git clone https://github.com/graphite-project/graphite-web.git <span class="c"># graphite-web</span>
+    git clone https://github.com/graphite-project/carbon.git <span class="c"># carbon</span>
+    git clone https://github.com/graphite-project/whisper.git <span class="c"># whisper</span>
+    git clone https://github.com/graphite-project/ceres.git <span class="c"># ceres</span>
+    <span class="c"># 分别进入到每个文件夹进行安装</span>
+    python setup.py install
+    <span class="c"># 默认会装到/opt/graphite/下</span>
+</pre></div>
+
+
+<p>可以通过--prefix, --install-lib, --install-data,     --install-scripts指定安装地址， 例如：</p>
+<div class="highlight"><pre>    python setup.py install --prefix<span class="o">=</span>/srv/graphite --install-lib<span class="o">=</span>/srv/graphite/lib
+</pre></div>
+
+
+<h4>安装依赖包</h4>
+<p>graphtie的依赖包很多，基本要求的有：</p>
+<blockquote>
+<ul>
+<li>Python 2.6 or greater</li>
+<li>Pycairo</li>
+<li>Django 1.4 or greater</li>
+<li>django-tagging 0.3.1 or greater</li>
+<li>Twisted 8.0 or greater (10.0+ recommended)</li>
+<li>zope-interface (often included in Twisted package dependency)</li>
+<li>fontconfig and at least one font package (a system package usually)</li>
+<li>nginx with uwsgi or apache</li>
+</ul>
+</blockquote>
+<p>我们可以通过graphite-web源码包下的check-dependencies.py来检查需要安装的依赖包：</p>
+<div class="highlight"><pre>    python /path/to/graphite-web/check-dependencies.py
+    <span class="c"># required的是必须安装的， optional可以通过自己的需要安装</span>
+</pre></div>
+
+
+<p><strong>注意</strong>: 安装cairo需要一下步骤：</p>
+<div class="highlight"><pre>    sudo apt-get install libffi-dev
+    sudo apt-get install libcairo2-dev
+    sudo pip install cairocffi
+</pre></div>
+
+
+<h4>安装后台数据库</h4>
+<p>graphite因为是基于django的，其默认的后台数据库是sqlite，我这里后台用MySQL，安装及配置：</p>
+<div class="highlight"><pre>    sudo apt-get install libmysqlclient-dev
+    sudo apt-get install mysql-server
+    sudo pip install mysql-python
+</pre></div>
+
+
+<p><strong>注意</strong>: 如果需要配置MySQL的字符集为utf8, 则需要修改my.conf的配置, 参考<a href="http://www.ha97.com/5359.html">这里</a></p>
+<h4>配置graphite</h4>
+<p>创建MySQL用户, 我这里用root.
+配置local_settings.py</p>
+<div class="highlight"><pre>    cp /opt/graphite/webapp/graphite/local_setings.py.example /opt/graphite/webapp/graphite/local_settings.py
+    vim /opt/graphite/webapp/graphite/local_settings.py
+</pre></div>
+
+
+<p>修改配置</p>
+<div class="highlight"><pre>    <span class="c"># 去掉注释并修改</span>
+    <span class="c"># 在MySQL创建一个名为graphite的database</span>
+    <span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;NAME&#39;</span><span class="p">:</span> <span class="s">&#39;graphite&#39;</span><span class="p">,</span> <span class="c"># 数据库名</span>
+            <span class="s">&#39;ENGINE&#39;</span><span class="p">:</span> <span class="s">&#39;django.db.backends.mysql&#39;</span><span class="p">,</span>
+            <span class="s">&#39;USER&#39;</span><span class="p">:</span> <span class="s">&#39;root&#39;</span><span class="p">,</span>
+            <span class="s">&#39;PASSWORD&#39;</span><span class="p">:</span> <span class="s">&#39;密码&#39;</span><span class="p">,</span>
+            <span class="s">&#39;HOST&#39;</span><span class="p">:</span> <span class="s">&#39;127.0.0.1&#39;</span><span class="p">,</span>
+            <span class="s">&#39;PORT&#39;</span><span class="p">:</span> <span class="s">&#39;3306&#39;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="o">......</span>
+    <span class="c">#最后一行注释掉</span>
+    <span class="kn">from</span> <span class="nn">graphite.app_settings</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+
+
+<h4>安装django-cores-headers</h4>
+<p>如果grafana和graphite运行在不同端口, grafana访问graphtie因为同源安全策略被拒绝, 我们需要设置CORS(同源资源共享)
+安装django-coreos-headers</p>
+<div class="highlight"><pre>    sudo pip install django-cores-headers
+</pre></div>
+
+
+<p>修改/opt/graphite/webapp/graphite/app_settings.py</p>
+<div class="highlight"><pre>    <span class="n">MIDDLEWARE_CLASSES</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="o">......</span>
+        <span class="s">&#39;corsheaders.middleware.CorsMiddleware&#39;</span><span class="p">,</span>
+        <span class="s">&#39;django.middleware.common.CommonMiddleware&#39;</span><span class="p">,</span>
+        <span class="o">......</span>
+    <span class="p">)</span>
+    <span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="o">......</span>
+        <span class="s">&#39;corsheaders&#39;</span><span class="p">,</span>
+        <span class="o">......</span>
+    <span class="p">)</span>
+</pre></div>
+
+
+<h4>运行syncdb</h4>
+<p>需要将manage.py拷到/opt/graphite/webapp/下</p>
+<div class="highlight"><pre>    cp /usr/local/lib/python2.7/dist-packages/django/conf/project_template/manage.py /opt/graphite/webapp/
+</pre></div>
+
+
+<p>运行syncdb</p>
+<div class="highlight"><pre>    <span class="nb">cd</span> /opt/graphite/webapp/
+    python manage.py syncdb
+</pre></div>
+
+
+<h4>安装和配置nginx</h4>
+<p>安装nginx</p>
+<div class="highlight"><pre>    sudo apt-get install nginx
+</pre></div>
+
+
+<p>配置nginx</p>
+<blockquote>
+<p>这里的配置是给graphite原生web界面单开一个端口, 如果只用grafana做前端则不需要这些配置</p>
+</blockquote>
+<div class="highlight"><pre>    <span class="c"># 创建graphite配置</span>
+    sudo vim /etc/nginx/sites-enabled/graphite
+</pre></div>
+
+
+<p>我的配置文件如下:</p>
+<div class="highlight"><pre>    <span class="n">server</span> <span class="p">{</span>
+        <span class="n">listen</span>        <span class="mi">8000</span><span class="p">;</span>
+        <span class="n">server_name</span>   <span class="n">your</span><span class="p">.</span><span class="n">server</span><span class="p">.</span><span class="n">name</span><span class="p">;</span>
+        <span class="n">charset</span>       <span class="n">utf</span><span class="o">-</span><span class="mi">8</span><span class="p">;</span>
+        <span class="n">access_log</span>    <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">graphite</span><span class="p">.</span><span class="n">access</span><span class="p">.</span><span class="n">log</span><span class="p">;</span>
+        <span class="n">error_log</span>     <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">graphite</span><span class="p">.</span><span class="n">error</span><span class="p">.</span><span class="n">log</span><span class="p">;</span>
+
+
+        <span class="n">location</span> <span class="o">/</span> <span class="p">{</span>
+            <span class="n">add_header</span> <span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Origin</span> <span class="err">$</span><span class="n">http_origin</span><span class="p">;</span>
+            <span class="n">add_header</span> <span class="err">&#39;</span><span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Credentials</span><span class="sc">&#39; &#39;</span><span class="nb">true</span><span class="err">&#39;</span><span class="p">;</span>
+            <span class="n">add_header</span> <span class="err">&#39;</span><span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Methods</span><span class="sc">&#39; &#39;</span><span class="n">GET</span><span class="p">,</span> <span class="n">OPTIONS</span><span class="err">&#39;</span><span class="p">;</span>
+            <span class="n">add_header</span> <span class="err">&#39;</span><span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Headers</span><span class="sc">&#39; &#39;</span><span class="n">origin</span><span class="p">,</span> <span class="n">authorization</span><span class="p">,</span> <span class="n">accept</span><span class="err">&#39;</span><span class="p">;</span>
+            <span class="n">uwsgi_pass</span> <span class="mf">127.0.0.1</span><span class="o">:</span><span class="mi">3031</span><span class="p">;</span>
+            <span class="n">include</span> <span class="n">uwsgi_params</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">location</span> <span class="o">/</span><span class="k">static</span> <span class="p">{</span>
+            <span class="n">alias</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">graphite</span><span class="o">/</span><span class="n">webapp</span><span class="o">/</span><span class="n">content</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">location</span> <span class="o">/</span><span class="n">content</span> <span class="p">{</span>
+            <span class="n">alias</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">graphite</span><span class="o">/</span><span class="n">webapp</span><span class="o">/</span><span class="n">content</span><span class="p">;</span>
+            <span class="n">gzip</span> <span class="n">off</span><span class="p">;</span>
+            <span class="n">include</span> <span class="n">uwsgi_params</span><span class="p">;</span>
+            <span class="n">uwsgi_pass</span>      <span class="mf">127.0.0.1</span><span class="o">:</span><span class="mi">3031</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</pre></div>
+
+
+<p>载入新配置并运行nginx</p>
+<div class="highlight"><pre>    sudo nginx -t <span class="c">#检查配置</span>
+    sudo /etc/ini.d/nginx reload
+</pre></div>
+
+
+<p>安装uwsgi</p>
+<div class="highlight"><pre>    sudo apt-get install uwsgi
+    sudo pip install uwsgi
+</pre></div>
+
+
+<p>配置uwsgi</p>
+<div class="highlight"><pre>    <span class="c"># 在/opt/graphite/webapp/graphite.ini</span>
+    sudo vim /opt/graphite/webapp/graphite.ini
+</pre></div>
+
+
+<p>我的配置如下：</p>
+<div class="highlight"><pre>    <span class="p">[</span><span class="n">uwsgi</span><span class="p">]</span>
+    <span class="n">processes</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">socket</span> <span class="o">=</span> <span class="mf">127.0.0.1</span><span class="o">:</span><span class="mi">3031</span>
+    <span class="n">gid</span> <span class="o">=</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span>
+    <span class="n">uid</span> <span class="o">=</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span>
+    <span class="n">chdir</span> <span class="o">=</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">graphite</span><span class="o">/</span><span class="n">webapp</span><span class="o">/</span><span class="n">graphite</span>
+    <span class="n">module</span> <span class="o">=</span> <span class="n">wsgi</span>
+    <span class="n">buffer</span><span class="o">-</span><span class="n">size</span> <span class="o">=</span> <span class="mi">65536</span>
+    <span class="n">pidfile</span> <span class="o">=</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">uwsgi</span><span class="p">.</span><span class="n">pid</span>
+    <span class="n">chmod</span><span class="o">-</span><span class="n">socket</span> <span class="o">=</span> <span class="mi">666</span>
+    <span class="n">pythonpath</span> <span class="o">=</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">graphite</span><span class="o">/</span><span class="n">webapp</span>
+    <span class="n">daemonize</span> <span class="o">=</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">graphite</span><span class="p">.</span><span class="n">log</span>
+</pre></div>
+
+
+<p>运行uwsgi</p>
+<div class="highlight"><pre>    uwsgi --ini /opt/graphite/webapp/graphite.ini
+</pre></div>
+
+
+<p>uwsgi在后台运行， 通过访问nignx配置的server_name:8000就可以看到graphite界面, 现在graphite并没有数据.</p>
+<hr />
+<h3>安装和配置 grafana</h3>
+<h4>下载grafana源码包</h4>
+<div class="highlight"><pre>    git clone https://github.com/grafana/grafana.git
+</pre></div>
+
+
+<h4>安装nodejs和npm</h4>
+<div class="highlight"><pre>    sudo apt-get install python-software-properties
+    sudo apt-add-repository ppa:chris-lea/node.js
+    sudo apt-get update
+    sudo apt-get install nodejs
+</pre></div>
+
+
+<p>检查一下nodejs和npm</p>
+<div class="highlight"><pre>    nodejs -v <span class="c"># 版本要v0.10 +</span>
+    npm -v    <span class="c"># 检查npm是否被安装</span>
+</pre></div>
+
+
+<p>如果npm没有被安装</p>
+<div class="highlight"><pre>    sudo apt-get install npm
+</pre></div>
+
+
+<h4>安装grafana</h4>
+<div class="highlight"><pre>    npm install <span class="c"># 在grafana文件夹里</span>
+    npm install -g grunt-cli
+    grunt <span class="o">(</span>runt default task that will generate css files<span class="o">)</span>
+    grunt build <span class="o">(</span>creates optimized &amp; minified release<span class="o">)</span>
+</pre></div>
+
+
+<h4>配置grafana</h4>
+<p>拷贝grafana配置</p>
+<div class="highlight"><pre>    cp /path/to/grafana/src/config.example.js /path/to/grafana/src/config.js
+</pre></div>
+
+
+<p>配置config.js</p>
+<div class="highlight"><pre>    <span class="c1">//去掉注释并修改为</span>
+    <span class="nx">datasources</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">graphite</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;graphite&#39;</span><span class="p">,</span>
+        <span class="nx">url</span><span class="o">:</span> <span class="s2">&quot;http://server_name:8000&quot;</span><span class="p">,</span>
+      <span class="p">},</span>
+      <span class="nx">elasticsearch</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;elasticsearch&#39;</span><span class="p">,</span>
+        <span class="nx">url</span><span class="o">:</span> <span class="s2">&quot;http://server_name:9200&quot;</span><span class="p">,</span>
+        <span class="nx">index</span><span class="o">:</span> <span class="s1">&#39;grafana-dash&#39;</span><span class="p">,</span>
+        <span class="nx">grafanaDB</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+</pre></div>
+
+
+<hr />
+<h4>安装elasticsearch</h4>
+<p>如果没有java, 安装java</p>
+<div class="highlight"><pre>    sudo apt-get update
+    sudo apt-get upgrade
+    sudo apt-get install software-properties-common
+    sudo add-apt-repository ppa:webupd8team/java
+    sudo apt-get update
+    sudo apt-get install oracle-java7-installer
+</pre></div>
+
+
+<p>加入elasticsearch源, 并安装</p>
+<div class="highlight"><pre>    wget -O - http://packages.elasticsearch.org/GPG-KEY-elasticsearch | apt-key add -
+    sudo <span class="nb">echo</span> <span class="s2">&quot;deb http://packages.elasticsearch.org/elasticsearch/1.1/debian stable main&quot;</span> &gt;&gt; /etc/apt/sources.list
+    sudo apt-get update
+    sudo apt-get install elasticsearch
+</pre></div>
+
+
+<p>启动elasticsearch服务, 并测试</p>
+<div class="highlight"><pre>    sudo /etc/init.d/elasticsearch start
+    curl -X GET <span class="s1">&#39;http://localhost:9200&#39;</span>
+    <span class="o">{</span>
+        <span class="s2">&quot;status&quot;</span> : 200,
+        <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;Carl \&quot;Crusher\&quot; Creel&quot;</span>,
+        <span class="s2">&quot;version&quot;</span> : <span class="o">{</span>
+        <span class="s2">&quot;number&quot;</span> : <span class="s2">&quot;1.3.2&quot;</span>,
+        <span class="s2">&quot;build_hash&quot;</span> : <span class="s2">&quot;dee175dbe2f254f3f26992f5d7591939aaefd12f&quot;</span>,
+        <span class="s2">&quot;build_timestamp&quot;</span> : <span class="s2">&quot;2014-08-13T14:29:30Z&quot;</span>,
+        <span class="s2">&quot;build_snapshot&quot;</span> : <span class="nb">false</span>,
+        <span class="s2">&quot;lucene_version&quot;</span> : <span class="s2">&quot;4.9&quot;</span>
+        <span class="o">}</span>,
+        <span class="s2">&quot;tagline&quot;</span> : <span class="s2">&quot;You Know, for Search&quot;</span>
+<span class="o">}</span>
+</pre></div>
+
+
+<h4>配置ningx</h4>
+<p>创建grafana配置</p>
+<div class="highlight"><pre>    sudo vim /etc/nginx/sites-enabled/grafana
+</pre></div>
+
+
+<p>我的配置如下
+参考了<a href="http://www.dongwm.com/archives/shi-yong-grafanahe-diamondgou-jian-graphitejian-kong-xi-tong/">dongwm</a>这篇博客的配置</p>
+<div class="highlight"><pre>    <span class="n">server</span> <span class="p">{</span>
+        <span class="n">listen</span>      <span class="o">*:</span><span class="mi">80</span> <span class="p">;</span>
+
+        <span class="n">server_name</span>     <span class="n">your</span><span class="p">.</span><span class="n">server</span><span class="p">.</span><span class="n">name</span><span class="p">;</span>
+        <span class="n">access_log</span>      <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">grafana</span><span class="p">.</span><span class="n">org</span><span class="p">.</span><span class="n">access</span><span class="p">.</span><span class="n">log</span><span class="p">;</span>
+
+        <span class="n">location</span> <span class="o">/</span> <span class="p">{</span>
+            <span class="n">add_header</span> <span class="err">&#39;</span><span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Origin</span><span class="err">&#39;</span> <span class="s">&quot;$http_origin&quot;</span><span class="p">;</span>
+            <span class="n">add_header</span> <span class="err">&#39;</span><span class="n">Access</span><span class="o">-</span><span class="n">Control</span><span class="o">-</span><span class="n">Allow</span><span class="o">-</span><span class="n">Credentials</span><span class="sc">&#39; &#39;</span><span class="nb">true</span><span class="err">&#39;</span><span class="p">;</span>
+            <span class="n">root</span>  <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">tian</span><span class="p">.</span><span class="n">li</span><span class="o">/</span><span class="n">grafana</span><span class="o">/</span><span class="n">src</span><span class="p">;</span>
+            <span class="n">index</span>  <span class="n">index</span><span class="p">.</span><span class="n">html</span>  <span class="n">index</span><span class="p">.</span><span class="n">htm</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">location</span> <span class="o">~</span> <span class="o">^/</span><span class="n">_aliases</span><span class="err">$</span> <span class="p">{</span>
+            <span class="n">proxy_pass</span> <span class="n">http</span><span class="o">:</span><span class="c1">//127.0.0.1:9200;</span>
+            <span class="n">proxy_read_timeout</span> <span class="mi">90</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">location</span> <span class="o">~</span> <span class="o">^/</span><span class="n">_nodes</span><span class="err">$</span> <span class="p">{</span>
+            <span class="n">proxy_pass</span> <span class="n">http</span><span class="o">:</span><span class="c1">//127.0.0.1:9200;</span>
+            <span class="n">proxy_read_timeout</span> <span class="mi">90</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">location</span> <span class="o">~</span> <span class="o">^/</span><span class="p">.</span><span class="err">*/</span><span class="n">_search</span><span class="err">$</span> <span class="p">{</span>
+            <span class="n">proxy_pass</span> <span class="n">http</span><span class="o">:</span><span class="c1">//127.0.0.1:9200;</span>
+            <span class="n">proxy_read_timeout</span> <span class="mi">90</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">location</span> <span class="o">~</span> <span class="o">^/</span><span class="p">.</span><span class="err">*/</span><span class="n">_mapping</span><span class="err">$</span> <span class="p">{</span>
+            <span class="n">proxy_pass</span> <span class="n">http</span><span class="o">:</span><span class="c1">//127.0.0.1:9200;</span>
+            <span class="n">proxy_read_timeout</span> <span class="mi">90</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="err">#</span> <span class="n">Password</span> <span class="n">protected</span> <span class="n">end</span> <span class="n">points</span>
+        <span class="n">location</span> <span class="o">~</span> <span class="o">^/</span><span class="n">kibana</span><span class="o">-</span><span class="kt">int</span><span class="o">/</span><span class="n">dashboard</span><span class="o">/</span><span class="p">.</span><span class="o">*</span><span class="err">$</span> <span class="p">{</span>
+            <span class="n">proxy_pass</span> <span class="n">http</span><span class="o">:</span><span class="c1">//127.0.0.1:9200;</span>
+            <span class="n">proxy_read_timeout</span> <span class="mi">90</span><span class="p">;</span>
+            <span class="n">limit_except</span> <span class="n">GET</span> <span class="p">{</span>
+                <span class="n">proxy_pass</span> <span class="n">http</span><span class="o">:</span><span class="c1">//127.0.0.1:9200;</span>
+                <span class="n">auth_basic</span> <span class="s">&quot;Restricted&quot;</span><span class="p">;</span>
+                <span class="err">#添加你自己的</span><span class="n">basic</span> <span class="n">auth</span>
+                <span class="n">auth_basic_user_file</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">conf</span><span class="p">.</span><span class="n">d</span><span class="o">/</span><span class="n">grafana</span><span class="p">.</span><span class="n">htpasswd</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">location</span> <span class="o">~</span> <span class="o">^/</span><span class="n">kibana</span><span class="o">-</span><span class="kt">int</span><span class="o">/</span><span class="n">temp</span><span class="p">.</span><span class="o">*</span><span class="err">$</span> <span class="p">{</span>
+            <span class="n">proxy_pass</span> <span class="n">http</span><span class="o">:</span><span class="c1">//127.0.0.1:9200;</span>
+            <span class="n">proxy_read_timeout</span> <span class="mi">90</span><span class="p">;</span>
+            <span class="n">limit_except</span> <span class="n">GET</span> <span class="p">{</span>
+                <span class="n">proxy_pass</span> <span class="n">http</span><span class="o">:</span><span class="c1">//127.0.0.1:9200;</span>
+                <span class="n">auth_basic</span> <span class="s">&quot;Restricted&quot;</span><span class="p">;</span>
+                <span class="n">auth_basic_user_file</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">conf</span><span class="p">.</span><span class="n">d</span><span class="o">/</span><span class="n">grafana</span><span class="p">.</span><span class="n">htpasswd</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</pre></div>
+
+
+<p><strong>注意</strong> 这里用到了Basic Authentication, 关于NginX的Basic Authentication可以参考<a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-http-authentication-with-nginx-on-ubuntu-12-10">这里</a>. 当然你也可以添加SSL认证.</p>
+<h4>检查配置和reload Nginx</h4>
+<div class="highlight"><pre>    sudo nginx -t
+    sudo /etc/ini.d/nginx reload
+</pre></div>
+
+
+<hr />
+<h3>安装和配置CollectD</h3>
+<h4>下载源码包</h4>
+<div class="highlight"><pre>    git clone https://github.com/collectd/collectd.git
+</pre></div>
+
+
+<h4>编译和安装</h4>
+<div class="highlight"><pre>    <span class="nb">cd</span> /path/to/collectd
+    ./configure
+    sudo make
+    sudo make install
+</pre></div>
+
+
+<h4>修改配置(默认会在/opt/collectd/etc/collectd.conf)</h4>
+<div class="highlight"><pre>    <span class="err">#</span> <span class="err">添加</span>
+    <span class="n">Include</span>     <span class="s">&quot;/opt/collectd/etc/collectd.d&quot;</span>
+</pre></div>
+
+
+<h4>创建配置文件</h4>
+<div class="highlight"><pre>    <span class="n">sudo</span> <span class="n">mkdir</span> <span class="n">mkdir</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">collectd</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">collectd</span><span class="p">.</span><span class="n">d</span>
+    <span class="n">sudo</span> <span class="n">vim</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">collectd</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">collectd</span><span class="p">.</span><span class="n">d</span><span class="o">/</span><span class="n">graphite</span><span class="p">.</span><span class="n">conf</span>
+</pre></div>
+
+
+<h4>加入以下配置, 修改你的graphite server</h4>
+<div class="highlight"><pre>    <span class="nt">&lt;LoadPlugin</span> <span class="err">&quot;python&quot;</span><span class="nt">&gt;</span>
+        Globals true
+    <span class="nt">&lt;/LoadPlugin&gt;</span>
+    <span class="nt">&lt;Plugin</span> <span class="err">&quot;python&quot;</span><span class="nt">&gt;</span>
+        ModulePath &quot;/opt/collectd-plugins/&quot;
+        Import &quot;carbon_writer&quot;
+        <span class="nt">&lt;Module</span> <span class="err">&quot;carbon_writer&quot;</span><span class="nt">&gt;</span>
+            LineReceiverHost &quot;your.graphite.server.name&quot;
+            LineReceiverPort 2003
+            DifferentiateCountersOverTime true
+            LowercaseMetricNames true
+            TypesDB &quot;/opt/collectd/share/collectd/types.db&quot;
+        <span class="nt">&lt;/Module&gt;</span>
+    <span class="nt">&lt;/Plugin&gt;</span>
+</pre></div>
+
+
+<h4>安装collectd-carbon插件</h4>
+<div class="highlight"><pre>    sudo git clone https://github.com/indygreg/collectd-carbon.git /opt/collectd-plugins
+</pre></div>
+
+
+<p>默认会开启cpu, load, memory, interface的监控. 如果开启更多监控plugins, 参考<a href="https://collectd.org/documentation/manpages/collectd.conf.5.shtml">官方wiki</a></p>
+<h3>运行各组件</h3>
+<p>在graphite server</p>
+<div class="highlight"><pre>    sudo /opt/graphite/bin/carbon-cache
+</pre></div>
+
+
+<p>在监控的server</p>
+<div class="highlight"><pre>    sudo /opt/collectd/sbin/collectd
+</pre></div>
+
+
+<h3>至此就基本配置就完成了, 在grafana上可以添加dashboard, graph, row来得到监控数据的可视化图.</h3>
+            </div>
+            <!-- /.entry-content -->
+        </article>
+    </section>
+
+        </div>
+
+        <div class="col-sm-3 well well-sm" id="sidebar">
+
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+                  <ul class="list-group" id="social">
+                    <li class="list-group-item"><a href="http://github.com/litian54"><i class="fa fa-github-square fa-lg"></i> github</a></li>
+                    <li class="list-group-item"><a href="http://www.linkedin.com/pub/tian-li/85/9a3/70b/"><i class="fa fa-linkedin-square fa-lg"></i> linkedin</a></li>
+                    <li class="list-group-item"><a href="https://www.facebook.com/li.tian.58555"><i class="fa fa-facebook-square fa-lg"></i> Facebook</a></li>
+                    <li class="list-group-item"><a href="http://weibo.com/u/2128427201"><i class="fa fa-weibo fa-lg"></i> Weibo</a></li>
+                  </ul>
+                </li>
+
+
+                <li class="list-group-item"><a href="/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                    <ul class="list-group" id="categories">
+                        <li class="list-group-item">
+                            <a href="/category/.html">
+                                <i class="fa fa-folder-open fa-lg"></i> 
+                            </a>
+                        </li>
+                        <li class="list-group-item">
+                            <a href="/category/work.html">
+                                <i class="fa fa-folder-open fa-lg"></i> work
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="list-group-item"><a href="/"><h4><i class="fa fa-tags fa-lg"></i><span class="icon-label">Tags</span></h4></a>
+                    <ul class="list-group list-inline tagcloud" id="tags">
+                        <li class="list-group-item tag-1">
+                            <a href="/tag/.html">
+                                
+                            </a>
+                        </li>
+                        <li class="list-group-item tag-1">
+                            <a href="/tag/saltsatck.html">
+                                saltsatck
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+    <li class="list-group-item"><h4><i class="fa fa-external-link-square fa-lg"></i><span class="icon-label">Links</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="http://getpelican.com/" target="_blank">
+                Pelican
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://python.org/" target="_blank">
+                Python.org
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://jinja.pocoo.org/" target="_blank">
+                Jinja2
+            </a>
+        </li>
+      </ul>
+    </li>
+
+        </ul>
+    </section>
+
+</aside>        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2014 Tian Li
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="/theme/js/respond.min.js"></script>
+
+</body>
+</html>
