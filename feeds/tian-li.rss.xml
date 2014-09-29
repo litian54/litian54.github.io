@@ -79,7 +79,7 @@ Ubuntu 12.04.4 LTS on AWS EC2, python2.7.3&lt;/p&gt;
         &lt;span class="p"&gt;}&lt;/span&gt;
     &lt;span class="p"&gt;}&lt;/span&gt;
     &lt;span class="o"&gt;......&lt;/span&gt;
-    &lt;span class="c"&gt;#最后一行注释掉&lt;/span&gt;
+    &lt;span class="c"&gt;# 解注释最后一行&lt;/span&gt;
     &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;graphite.app_settings&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
