@@ -3,11 +3,11 @@
 
 <head>
   <!-- ## for client-side less
-  <link rel="stylesheet/less" type="text/css" href="/theme/css/style.less">
+  <link rel="stylesheet/less" type="text/css" href="litian54.github.io/theme/css/style.less">
   <script src="http://cdnjs.cloudflare.com/ajax/libs/less.js/1.7.3/less.min.js" type="text/javascript"></script>
   -->
-  <link rel="stylesheet" type="text/css" href="/theme/css/style.css">
-  <link rel="stylesheet" type="text/css" href="/theme/css/pygments.css">
+  <link rel="stylesheet" type="text/css" href="litian54.github.io/theme/css/style.css">
+  <link rel="stylesheet" type="text/css" href="litian54.github.io/theme/css/pygments.css">
   <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=PT+Sans|PT+Serif|PT+Mono">
 
   <meta charset="utf-8" />
@@ -27,13 +27,13 @@
 <body>
   <aside>
     <div id="user_meta">
-      <a href="">
-        <img src="/images/avatar.png" alt="logo">
+      <a href="litian54.github.io">
+        <img src="litian54.github.io/images/avatar.png" alt="logo">
       </a>
-      <h2><a href="">Tian Li</a></h2>
+      <h2><a href="litian54.github.io">Tian Li</a></h2>
       <p></p>
       <ul>
-        <li><a href="/pages/about-me.html">About Me</a></li>
+        <li><a href="litian54.github.io/pages/about-me.html">About Me</a></li>
         <li><a href="http://github.com/litian54" target="_blank">github</a></li>
         <li><a href="http://www.linkedin.com/pub/tian-li/85/9a3/70b/" target="_blank">linkedin</a></li>
         <li><a href="https://www.facebook.com/li.tian.58555" target="_blank">Facebook</a></li>
@@ -45,16 +45,16 @@
   <main>
     <header>
       <p>
-      <a href="">Index</a> &brvbar;
-      <a href="/archives.html">Archives</a> &brvbar;
-      <a href="/categories.html">Categories</a> &brvbar;
-      <a href="/tags">Tags</a>
+      <a href="litian54.github.io">Index</a> &brvbar;
+      <a href="litian54.github.io/archives.html">Archives</a> &brvbar;
+      <a href="litian54.github.io/categories.html">Categories</a> &brvbar;
+      <a href="litian54.github.io/tags">Tags</a>
       </p>
     </header>
 
 <article>
   <div class="article_title">
-    <h3><a href="/articles/python-data-model-xue-xi-bi-ji">python Data model 学习笔记</a></h3>
+    <h3><a href="litian54.github.io/articles/python-data-model-xue-xi-bi-ji">python Data model 学习笔记</a></h3>
   </div>
   <div class="article_text">
     <h4>学习<a href="https://docs.python.org/2/reference/datamodel.html">Python2.7 Data model</a>的心得笔记</h4>
@@ -101,45 +101,46 @@
 
 <p>原因是dict在做update的时候，会调用__eq__对比key的值(我理解为key的id，或内存位置)。
 python源码和分析，摘自<a href="http://blog.csdn.net/yueguanghaidao/article/details/26162173">这里</a>:</p>
-<div class="highlight"><pre><span class="k">static</span> <span class="n">dictentry</span> <span class="o">*</span>
-<span class="nf">lookdict</span><span class="p">(</span><span class="n">dictobject</span> <span class="o">*</span><span class="n">mp</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">key</span><span class="p">,</span> <span class="k">register</span> <span class="kt">long</span> <span class="n">hash</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="k">register</span> <span class="kt">size_t</span> <span class="n">i</span><span class="p">;</span>
-    <span class="k">register</span> <span class="kt">size_t</span> <span class="n">perturb</span><span class="p">;</span>
-    <span class="k">register</span> <span class="n">dictentry</span> <span class="o">*</span><span class="n">freeslot</span><span class="p">;</span>
-    <span class="k">register</span> <span class="kt">size_t</span> <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="kt">size_t</span><span class="p">)</span><span class="n">mp</span><span class="o">-&gt;</span><span class="n">ma_mask</span><span class="p">;</span>
-    <span class="n">dictentry</span> <span class="o">*</span><span class="n">ep0</span> <span class="o">=</span> <span class="n">mp</span><span class="o">-&gt;</span><span class="n">ma_table</span><span class="p">;</span>
-    <span class="k">register</span> <span class="n">dictentry</span> <span class="o">*</span><span class="n">ep</span><span class="p">;</span>
-    <span class="k">register</span> <span class="kt">int</span> <span class="n">cmp</span><span class="p">;</span>
-    <span class="n">PyObject</span> <span class="o">*</span><span class="n">startkey</span><span class="p">;</span>
+<div class="highlight"><pre>    <span class="k">static</span> <span class="n">dictentry</span> <span class="o">*</span>
+    <span class="nf">lookdict</span><span class="p">(</span><span class="n">dictobject</span> <span class="o">*</span><span class="n">mp</span><span class="p">,</span> <span class="n">PyObject</span> <span class="o">*</span><span class="n">key</span><span class="p">,</span> <span class="k">register</span> <span class="kt">long</span> <span class="n">hash</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">register</span> <span class="kt">size_t</span> <span class="n">i</span><span class="p">;</span>
+        <span class="k">register</span> <span class="kt">size_t</span> <span class="n">perturb</span><span class="p">;</span>
+        <span class="k">register</span> <span class="n">dictentry</span> <span class="o">*</span><span class="n">freeslot</span><span class="p">;</span>
+        <span class="k">register</span> <span class="kt">size_t</span> <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="kt">size_t</span><span class="p">)</span><span class="n">mp</span><span class="o">-&gt;</span><span class="n">ma_mask</span><span class="p">;</span>
+        <span class="n">dictentry</span> <span class="o">*</span><span class="n">ep0</span> <span class="o">=</span> <span class="n">mp</span><span class="o">-&gt;</span><span class="n">ma_table</span><span class="p">;</span>
+        <span class="k">register</span> <span class="n">dictentry</span> <span class="o">*</span><span class="n">ep</span><span class="p">;</span>
+        <span class="k">register</span> <span class="kt">int</span> <span class="n">cmp</span><span class="p">;</span>
+        <span class="n">PyObject</span> <span class="o">*</span><span class="n">startkey</span><span class="p">;</span>
 
-    <span class="n">i</span> <span class="o">=</span> <span class="p">(</span><span class="kt">size_t</span><span class="p">)</span><span class="n">hash</span> <span class="o">&amp;</span> <span class="n">mask</span><span class="p">;</span>
-    <span class="n">ep</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">ep0</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">ep</span><span class="o">-&gt;</span><span class="n">me_key</span> <span class="o">==</span> <span class="nb">NULL</span> <span class="o">||</span> <span class="n">ep</span><span class="o">-&gt;</span><span class="n">me_key</span> <span class="o">==</span> <span class="n">key</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">ep</span><span class="p">;</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="p">(</span><span class="kt">size_t</span><span class="p">)</span><span class="n">hash</span> <span class="o">&amp;</span> <span class="n">mask</span><span class="p">;</span>
+        <span class="n">ep</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">ep0</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">ep</span><span class="o">-&gt;</span><span class="n">me_key</span> <span class="o">==</span> <span class="nb">NULL</span> <span class="o">||</span> <span class="n">ep</span><span class="o">-&gt;</span><span class="n">me_key</span> <span class="o">==</span> <span class="n">key</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">ep</span><span class="p">;</span>
 
-    <span class="k">if</span> <span class="p">(</span><span class="n">ep</span><span class="o">-&gt;</span><span class="n">me_key</span> <span class="o">==</span> <span class="n">dummy</span><span class="p">)</span>
-        <span class="n">freeslot</span> <span class="o">=</span> <span class="n">ep</span><span class="p">;</span>
-    <span class="k">else</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">ep</span><span class="o">-&gt;</span><span class="n">me_hash</span> <span class="o">==</span> <span class="n">hash</span><span class="p">)</span> <span class="p">{</span>
-            <span class="n">startkey</span> <span class="o">=</span> <span class="n">ep</span><span class="o">-&gt;</span><span class="n">me_key</span><span class="p">;</span>
-            <span class="n">cmp</span> <span class="o">=</span> <span class="n">PyObject_RichCompareBool</span><span class="p">(</span><span class="n">startkey</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">Py_EQ</span><span class="p">);</span> <span class="c1">//比较key的值</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">cmp</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
-                <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">ep0</span> <span class="o">==</span> <span class="n">mp</span><span class="o">-&gt;</span><span class="n">ma_table</span> <span class="o">&amp;&amp;</span> <span class="n">ep</span><span class="o">-&gt;</span><span class="n">me_key</span> <span class="o">==</span> <span class="n">startkey</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">cmp</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">//只有key相等才会返回已有的位置，否则会寻找一个新的位置</span>
-                    <span class="k">return</span> <span class="n">ep</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">ep</span><span class="o">-&gt;</span><span class="n">me_key</span> <span class="o">==</span> <span class="n">dummy</span><span class="p">)</span>
+            <span class="n">freeslot</span> <span class="o">=</span> <span class="n">ep</span><span class="p">;</span>
+        <span class="k">else</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">ep</span><span class="o">-&gt;</span><span class="n">me_hash</span> <span class="o">==</span> <span class="n">hash</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">startkey</span> <span class="o">=</span> <span class="n">ep</span><span class="o">-&gt;</span><span class="n">me_key</span><span class="p">;</span>
+                <span class="n">cmp</span> <span class="o">=</span> <span class="n">PyObject_RichCompareBool</span><span class="p">(</span><span class="n">startkey</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">Py_EQ</span><span class="p">);</span> <span class="c1">//比较key的值</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">cmp</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">ep0</span> <span class="o">==</span> <span class="n">mp</span><span class="o">-&gt;</span><span class="n">ma_table</span> <span class="o">&amp;&amp;</span> <span class="n">ep</span><span class="o">-&gt;</span><span class="n">me_key</span> <span class="o">==</span> <span class="n">startkey</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">cmp</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">//只有key相等才会返回已有的位置，否则会寻找一个新的位置</span>
+                        <span class="k">return</span> <span class="n">ep</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">else</span> <span class="p">{</span>
+                    <span class="cm">/* The compare did major nasty stuff to the</span>
+<span class="cm">                     * dict:  start over.</span>
+<span class="cm">                     * XXX A clever adversary could prevent this</span>
+<span class="cm">                     * XXX from terminating.</span>
+<span class="cm">                     */</span>
+                    <span class="k">return</span> <span class="n">lookdict</span><span class="p">(</span><span class="n">mp</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">hash</span><span class="p">);</span>
+                <span class="p">}</span>
             <span class="p">}</span>
-            <span class="k">else</span> <span class="p">{</span>
-                <span class="cm">/* The compare did major nasty stuff to the</span>
-<span class="cm">                 * dict:  start over.</span>
-<span class="cm">                 * XXX A clever adversary could prevent this</span>
-<span class="cm">                 * XXX from terminating.</span>
-<span class="cm">                 */</span>
-                <span class="k">return</span> <span class="n">lookdict</span><span class="p">(</span><span class="n">mp</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">hash</span><span class="p">);</span>
-            <span class="p">}</span>
+            <span class="n">freeslot</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
         <span class="p">}</span>
-        <span class="n">freeslot</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
     <span class="p">}</span>
 </pre></div>
 
@@ -186,9 +187,9 @@ python源码和分析，摘自<a href="http://blog.csdn.net/yueguanghaidao/artic
   </div>
   <div class="article_meta">
     <p>Posted on: Mon 20 October 2014</p>
-    <p>Category: <a href="/category/learn.html">learn</a>
+    <p>Category: <a href="litian54.github.io/category/learn.html">learn</a>
  &ndash; Tags:
-      <a href="/tag/python.html">python</a>    </p>
+      <a href="litian54.github.io/tag/python.html">python</a>    </p>
   </div>
 
 
