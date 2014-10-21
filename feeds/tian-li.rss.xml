@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Tian Li's Blog</title><link>litian54.github.io/</link><description></description><atom:link href="litian54.github.io/feeds/tian-li.rss.xml" rel="self"></atom:link><lastBuildDate>Mon, 20 Oct 2014 00:00:00 -0700</lastBuildDate><item><title>python Data model 学习笔记</title><link>litian54.github.io/articles/python-data-model-xue-xi-bi-ji</link><description>&lt;h4&gt;学习&lt;a href="https://docs.python.org/2/reference/datamodel.html"&gt;Python2.7 Data model&lt;/a&gt;的心得笔记&lt;/h4&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Tian Li's Blog</title><link>http://litian54.github.io/</link><description></description><atom:link href="http://litian54.github.io/feeds/tian-li.rss.xml" rel="self"></atom:link><lastBuildDate>Mon, 20 Oct 2014 00:00:00 -0700</lastBuildDate><item><title>python Data model 学习笔记</title><link>http://litian54.github.io/articles/python-data-model-xue-xi-bi-ji</link><description>&lt;h4&gt;学习&lt;a href="https://docs.python.org/2/reference/datamodel.html"&gt;Python2.7 Data model&lt;/a&gt;的心得笔记&lt;/h4&gt;
 &lt;h3&gt;Basic customization&lt;/h3&gt;
 &lt;h4&gt;object.&lt;strong&gt;hash&lt;/strong&gt;()&lt;/h4&gt;
 &lt;p&gt;每次update dict(如添加新key value, 或者get value)的时候，都会调用&lt;code&gt;__hash__&lt;/code&gt;获取key的hash值，来进行key的查找。
@@ -125,7 +125,7 @@ python源码和分析，摘自&lt;a href="http://blog.csdn.net/yueguanghaidao/ar
 
     &lt;span class="c"&gt;# hehe1 3&lt;/span&gt;
     &lt;span class="c"&gt;# hehe2 1&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tian Li</dc:creator><pubDate>Mon, 20 Oct 2014 00:00:00 -0700</pubDate><guid>tag:,2014-10-20:litian54.github.io/articles/python-data-model-xue-xi-bi-ji</guid><category>python</category></item><item><title>go 学习笔记(1)</title><link>litian54.github.io/articles/go-xue-xi-bi-ji-1</link><description>&lt;ul&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tian Li</dc:creator><pubDate>Mon, 20 Oct 2014 00:00:00 -0700</pubDate><guid>tag:litian54.github.io,2014-10-20:articles/python-data-model-xue-xi-bi-ji</guid><category>python</category></item><item><title>go 学习笔记(1)</title><link>http://litian54.github.io/articles/go-xue-xi-bi-ji-1</link><description>&lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;每个go源码文件开头都是一个package声明，表示该go代码所属的包。要生成go可执行程序，必须建立一个名字为main的包，并且在该包中包含一个main()函数（该函数是go可执行程序的起点）&lt;/p&gt;
 &lt;/li&gt;
@@ -265,7 +265,7 @@ python源码和分析，摘自&lt;a href="http://blog.csdn.net/yueguanghaidao/ar
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;变量b的类型不是[3]int，而是*[3]int类型&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tian Li</dc:creator><pubDate>Thu, 09 Oct 2014 00:00:00 -0700</pubDate><guid>tag:,2014-10-09:litian54.github.io/articles/go-xue-xi-bi-ji-1</guid><category>go</category></item><item><title>安装和配置 graphite, grafana和collectD (基于nginx, uwsgi)</title><link>litian54.github.io/articles/an-zhuang-he-pei-zhi-graphite-grafanahe-collectd-ji-yu-nginx-uwsgi</link><description>&lt;blockquote&gt;
+&lt;p&gt;变量b的类型不是[3]int，而是*[3]int类型&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tian Li</dc:creator><pubDate>Thu, 09 Oct 2014 00:00:00 -0700</pubDate><guid>tag:litian54.github.io,2014-10-09:articles/go-xue-xi-bi-ji-1</guid><category>go</category></item><item><title>安装和配置 graphite, grafana和collectD (基于nginx, uwsgi)</title><link>http://litian54.github.io/articles/an-zhuang-he-pei-zhi-graphite-grafanahe-collectd-ji-yu-nginx-uwsgi</link><description>&lt;blockquote&gt;
 &lt;p&gt;配置环境：
 Ubuntu 12.04.4 LTS on AWS EC2, python2.7.3&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -692,7 +692,7 @@ Ubuntu 12.04.4 LTS on AWS EC2, python2.7.3&lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h3&gt;至此就基本配置就完成了, 在grafana上可以添加dashboard, graph, row来得到监控数据的可视化图.&lt;/h3&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tian Li</dc:creator><pubDate>Thu, 25 Sep 2014 00:00:00 -0700</pubDate><guid>tag:,2014-09-25:litian54.github.io/articles/an-zhuang-he-pei-zhi-graphite-grafanahe-collectd-ji-yu-nginx-uwsgi</guid><category>saltsatck</category></item><item><title>SaltStack 学习笔记(2) (未完待续)</title><link>litian54.github.io/articles/saltstack-xue-xi-bi-ji-2-wei-wan-dai-xu</link><description>&lt;h3&gt;saltstack与自动化运维&lt;/h3&gt;
+&lt;h3&gt;至此就基本配置就完成了, 在grafana上可以添加dashboard, graph, row来得到监控数据的可视化图.&lt;/h3&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tian Li</dc:creator><pubDate>Thu, 25 Sep 2014 00:00:00 -0700</pubDate><guid>tag:litian54.github.io,2014-09-25:articles/an-zhuang-he-pei-zhi-graphite-grafanahe-collectd-ji-yu-nginx-uwsgi</guid><category>saltsatck</category></item><item><title>SaltStack 学习笔记(2) (未完待续)</title><link>http://litian54.github.io/articles/saltstack-xue-xi-bi-ji-2-wei-wan-dai-xu</link><description>&lt;h3&gt;saltstack与自动化运维&lt;/h3&gt;
 &lt;h3&gt;orchestration with salt&lt;/h3&gt;
 &lt;h3&gt;salt-cloud&lt;/h3&gt;
 &lt;h4&gt;/etc/salt/cloud.provider 用来设置cloud provider, 例如EC2, DigitalOcean, RackSpace&lt;/h4&gt;
@@ -782,7 +782,7 @@ Ubuntu 12.04.4 LTS on AWS EC2, python2.7.3&lt;/p&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;可以自动完成验证后的一些自动化初始化。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tian Li</dc:creator><pubDate>Wed, 03 Sep 2014 00:00:00 -0700</pubDate><guid>tag:,2014-09-03:litian54.github.io/articles/saltstack-xue-xi-bi-ji-2-wei-wan-dai-xu</guid><category>saltsatck</category></item><item><title>SaltStack 学习笔记(1)</title><link>litian54.github.io/articles/saltstack-xue-xi-bi-ji-1</link><description>&lt;h3&gt;基本概念&lt;/h3&gt;
+&lt;p&gt;可以自动完成验证后的一些自动化初始化。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tian Li</dc:creator><pubDate>Wed, 03 Sep 2014 00:00:00 -0700</pubDate><guid>tag:litian54.github.io,2014-09-03:articles/saltstack-xue-xi-bi-ji-2-wei-wan-dai-xu</guid><category>saltsatck</category></item><item><title>SaltStack 学习笔记(1)</title><link>http://litian54.github.io/articles/saltstack-xue-xi-bi-ji-1</link><description>&lt;h3&gt;基本概念&lt;/h3&gt;
 &lt;blockquote&gt;
 &lt;ul&gt;
 &lt;li&gt;Salt Master&lt;/li&gt;
@@ -1190,4 +1190,4 @@ Not all state modules contain mod_watch. If mod_watch is absent from the watchin
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr /&gt;
-&lt;p&gt;未完待续.....&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tian Li</dc:creator><pubDate>Thu, 24 Jul 2014 00:00:00 -0700</pubDate><guid>tag:,2014-07-24:litian54.github.io/articles/saltstack-xue-xi-bi-ji-1</guid><category>saltsatck</category></item><item><title>Hello, World! 哈喽, 沃德！</title><link>litian54.github.io/articles/hello-world-ha-lou-wo-de</link><description>&lt;p&gt;Begin to write something here about my dev life...keep moving!&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tian Li</dc:creator><pubDate>Thu, 12 Jun 2014 11:20:00 -0700</pubDate><guid>tag:,2014-06-12:litian54.github.io/articles/hello-world-ha-lou-wo-de</guid><category></category></item></channel></rss>
+&lt;p&gt;未完待续.....&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tian Li</dc:creator><pubDate>Thu, 24 Jul 2014 00:00:00 -0700</pubDate><guid>tag:litian54.github.io,2014-07-24:articles/saltstack-xue-xi-bi-ji-1</guid><category>saltsatck</category></item><item><title>Hello, World! 哈喽, 沃德！</title><link>http://litian54.github.io/articles/hello-world-ha-lou-wo-de</link><description>&lt;p&gt;Begin to write something here about my dev life...keep moving!&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tian Li</dc:creator><pubDate>Thu, 12 Jun 2014 11:20:00 -0700</pubDate><guid>tag:litian54.github.io,2014-06-12:articles/hello-world-ha-lou-wo-de</guid><category></category></item></channel></rss>
