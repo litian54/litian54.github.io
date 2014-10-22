@@ -891,18 +891,24 @@ sudo make install
 &lt;/ul&gt;
 &lt;hr /&gt;
 &lt;ul&gt;
-&lt;li&gt;state配置&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;state配置&lt;/p&gt;
+&lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;基本配置：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nx"&gt;apache&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;                 &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="nx"&gt;ID&lt;/span&gt; &lt;span class="nx"&gt;declaration&lt;/span&gt;
     &lt;span class="nx"&gt;pkg&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;                &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="nx"&gt;state&lt;/span&gt; &lt;span class="nx"&gt;declaration&lt;/span&gt;
         &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="nx"&gt;installed&lt;/span&gt;     &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;declaration&lt;/span&gt;
-&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="err"&gt;使用子目录：&lt;/span&gt;
-   &lt;span class="nx"&gt;top&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;sls&lt;/span&gt;&lt;span class="err"&gt;中&lt;/span&gt;&lt;span class="nx"&gt;webserver&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;dev&lt;/span&gt;&lt;span class="err"&gt;用来表示子目录&lt;/span&gt;&lt;span class="nx"&gt;webserver&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nx"&gt;dev&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;sls&lt;/span&gt;
-&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nx"&gt;init&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;sls&lt;/span&gt; &lt;span class="err"&gt;在一个子目录里面表示引导文件，也就表示子目录本身，&lt;/span&gt; &lt;span class="err"&gt;所以&amp;quot;&lt;/span&gt;&lt;span class="nx"&gt;webserver&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nx"&gt;init&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;sls&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt; &lt;span class="err"&gt;就是表示&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="nx"&gt;webserver&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;使用子目录：
+   top.sls中webserver.dev用来表示子目录webserver/dev.sls&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;init.sls 在一个子目录里面表示引导文件，也就表示子目录本身， 所以"webserver/init.sls'' 就是表示''webserver''.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;例如，在上面apache配置中，为了区分不同系统所提供不同的apache版本:&lt;/li&gt;
 &lt;/ul&gt;
@@ -1117,9 +1123,7 @@ sudo make install
 &lt;li&gt;创建pillar的.sls文件&lt;/li&gt;
 &lt;li&gt;pillar is just a Python dict, so Python dict methods such as get and items can be used.&lt;/li&gt;
 &lt;/ol&gt;
-&lt;blockquote&gt;
-&lt;p&gt;pillar的使用&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;h3&gt;pillar的使用&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;    &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;srv&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;pillar&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;top&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sls&lt;/span&gt;
     &lt;span class="nl"&gt;base:&lt;/span&gt;
         &lt;span class="sc"&gt;&amp;#39;*&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
@@ -1178,17 +1182,17 @@ prereq目前还没搞明白, 不过看例子, 部署新代码的时候用的到.
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;官方文档给出关于watch的note是:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;If a state should only execute when another state has changes, and otherwise do nothing, the new onchanges requisite should be used instead of watch. watch is designed to add additional behavior when there are changes, but otherwise execute normally.
-If the mod_watch function exists in the watching state module, it will be called in addition to the normal watching state. The return data from the mod_watch function is what will be returned to the master in this case; the return data from the main watching function is discarded.
-Not all state modules contain mod_watch. If mod_watch is absent from the watching state module, the watch requisite behaves exactly like a require requisite.&lt;/p&gt;
-&lt;/blockquote&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;top.sls 中的targeting匹配用在highstate的时候，state.sls中没有用.&lt;/p&gt;
-&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;If a state should only execute when another state has changes, and otherwise do nothing, the new onchanges requisite should be used instead of watch. watch is designed to add additional behavior when there are changes, but otherwise execute normally.&lt;/p&gt;
+&lt;p&gt;If the mod_watch function exists in the watching state module, it will be called in addition to the normal watching state. The return data from the mod_watch function is what will be returned to the master in this case; the return data from the main watching function is discarded.&lt;/p&gt;
+&lt;p&gt;Not all state modules contain mod_watch. If mod_watch is absent from the watching state module, the watch requisite behaves exactly like a require requisite.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;top.sls 中的targeting匹配用在highstate的时候，state.sls中没有用.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;hr /&gt;
 &lt;p&gt;未完待续.....&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tian Li</dc:creator><pubDate>Thu, 24 Jul 2014 00:00:00 -0700</pubDate><guid>tag:litian54.github.io,2014-07-24:articles/saltstack-xue-xi-bi-ji-1</guid><category>saltsatck</category></item><item><title>Hello, World! 哈喽, 沃德！</title><link>http://litian54.github.io/articles/hello-world-ha-lou-wo-de</link><description>&lt;p&gt;Begin to write something here about my dev life...keep moving!&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Tian Li</dc:creator><pubDate>Thu, 12 Jun 2014 11:20:00 -0700</pubDate><guid>tag:litian54.github.io,2014-06-12:articles/hello-world-ha-lou-wo-de</guid><category></category></item></channel></rss>
