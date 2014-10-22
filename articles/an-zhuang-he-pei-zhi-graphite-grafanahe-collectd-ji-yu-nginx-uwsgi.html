@@ -64,18 +64,18 @@ Ubuntu 12.04.4 LTS on AWS EC2, python2.7.3</p>
 <hr />
 <h3>安装和配置 graphite</h3>
 <h4>下载源码包</h4>
-<div class="highlight"><pre>    git clone https://github.com/graphite-project/graphite-web.git <span class="c"># graphite-web</span>
-    git clone https://github.com/graphite-project/carbon.git <span class="c"># carbon</span>
-    git clone https://github.com/graphite-project/whisper.git <span class="c"># whisper</span>
-    git clone https://github.com/graphite-project/ceres.git <span class="c"># ceres</span>
-    <span class="c"># 分别进入到每个文件夹进行安装</span>
-    python setup.py install
-    <span class="c"># 默认会装到/opt/graphite/下</span>
+<div class="highlight"><pre>git clone https://github.com/graphite-project/graphite-web.git <span class="c"># graphite-web</span>
+git clone https://github.com/graphite-project/carbon.git <span class="c"># carbon</span>
+git clone https://github.com/graphite-project/whisper.git <span class="c"># whisper</span>
+git clone https://github.com/graphite-project/ceres.git <span class="c"># ceres</span>
+<span class="c"># 分别进入到每个文件夹进行安装</span>
+python setup.py install
+<span class="c"># 默认会装到/opt/graphite/下</span>
 </pre></div>
 
 
 <p>可以通过--prefix, --install-lib, --install-data,     --install-scripts指定安装地址， 例如：</p>
-<div class="highlight"><pre>    python setup.py install --prefix<span class="o">=</span>/srv/graphite --install-lib<span class="o">=</span>/srv/graphite/lib
+<div class="highlight"><pre>python setup.py install --prefix<span class="o">=</span>/srv/graphite --install-lib<span class="o">=</span>/srv/graphite/lib
 </pre></div>
 
 
@@ -94,23 +94,23 @@ Ubuntu 12.04.4 LTS on AWS EC2, python2.7.3</p>
 </ul>
 </blockquote>
 <p>我们可以通过graphite-web源码包下的check-dependencies.py来检查需要安装的依赖包：</p>
-<div class="highlight"><pre>    python /path/to/graphite-web/check-dependencies.py
-    <span class="c"># required的是必须安装的， optional可以通过自己的需要安装</span>
+<div class="highlight"><pre>python /path/to/graphite-web/check-dependencies.py
+<span class="c"># required的是必须安装的， optional可以通过自己的需要安装</span>
 </pre></div>
 
 
 <p><strong>注意</strong>: 安装cairo需要一下步骤：</p>
-<div class="highlight"><pre>    sudo apt-get install libffi-dev
-    sudo apt-get install libcairo2-dev
-    sudo pip install cairocffi
+<div class="highlight"><pre>sudo apt-get install libffi-dev
+sudo apt-get install libcairo2-dev
+sudo pip install cairocffi
 </pre></div>
 
 
 <h4>安装后台数据库</h4>
 <p>graphite因为是基于django的，其默认的后台数据库是sqlite，我这里后台用MySQL，安装及配置：</p>
-<div class="highlight"><pre>    sudo apt-get install libmysqlclient-dev
-    sudo apt-get install mysql-server
-    sudo pip install mysql-python
+<div class="highlight"><pre>sudo apt-get install libmysqlclient-dev
+sudo apt-get install mysql-server
+sudo pip install mysql-python
 </pre></div>
 
 
@@ -118,16 +118,16 @@ Ubuntu 12.04.4 LTS on AWS EC2, python2.7.3</p>
 <h4>配置graphite</h4>
 <p>创建MySQL用户, 我这里用root.
 配置local_settings.py</p>
-<div class="highlight"><pre>    cp /opt/graphite/webapp/graphite/local_setings.py.example /opt/graphite/webapp/graphite/local_settings.py
-    vim /opt/graphite/webapp/graphite/local_settings.py
+<div class="highlight"><pre>cp /opt/graphite/webapp/graphite/local_setings.py.example /opt/graphite/webapp/graphite/local_settings.py
+vim /opt/graphite/webapp/graphite/local_settings.py
 </pre></div>
 
 
 <p>修改配置</p>
-<div class="highlight"><pre>    <span class="c"># 去掉注释并修改</span>
-    <span class="c"># 在MySQL创建一个名为graphite的database</span>
-    <span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="p">{</span>
+<div class="highlight"><pre><span class="c"># 去掉注释并修改</span>
+<span class="c"># 在MySQL创建一个名为graphite的database</span>
+<span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s">&#39;NAME&#39;</span><span class="p">:</span> <span class="s">&#39;graphite&#39;</span><span class="p">,</span> <span class="c"># 数据库名</span>
             <span class="s">&#39;ENGINE&#39;</span><span class="p">:</span> <span class="s">&#39;django.db.backends.mysql&#39;</span><span class="p">,</span>
             <span class="s">&#39;USER&#39;</span><span class="p">:</span> <span class="s">&#39;root&#39;</span><span class="p">,</span>
@@ -137,48 +137,48 @@ Ubuntu 12.04.4 LTS on AWS EC2, python2.7.3</p>
         <span class="p">}</span>
     <span class="p">}</span>
     <span class="o">......</span>
-    <span class="c"># 解注释最后一行</span>
-    <span class="kn">from</span> <span class="nn">graphite.app_settings</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="c"># 解注释最后一行</span>
+<span class="kn">from</span> <span class="nn">graphite.app_settings</span> <span class="kn">import</span> <span class="o">*</span>
 </pre></div>
 
 
 <h4>安装django-cores-headers</h4>
 <p>如果grafana和graphite运行在不同端口, grafana访问graphtie因为同源安全策略被拒绝, 我们需要设置CORS(同源资源共享)
 安装django-coreos-headers</p>
-<div class="highlight"><pre>    sudo pip install django-cores-headers
+<div class="highlight"><pre>sudo pip install django-cores-headers
 </pre></div>
 
 
 <p>修改/opt/graphite/webapp/graphite/app_settings.py</p>
-<div class="highlight"><pre>    <span class="n">MIDDLEWARE_CLASSES</span> <span class="o">=</span> <span class="p">(</span>
+<div class="highlight"><pre><span class="n">MIDDLEWARE_CLASSES</span> <span class="o">=</span> <span class="p">(</span>
         <span class="o">......</span>
         <span class="s">&#39;corsheaders.middleware.CorsMiddleware&#39;</span><span class="p">,</span>
         <span class="s">&#39;django.middleware.common.CommonMiddleware&#39;</span><span class="p">,</span>
         <span class="o">......</span>
-    <span class="p">)</span>
-    <span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">(</span>
+<span class="p">)</span>
+<span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">(</span>
         <span class="o">......</span>
         <span class="s">&#39;corsheaders&#39;</span><span class="p">,</span>
         <span class="o">......</span>
-    <span class="p">)</span>
+<span class="p">)</span>
 </pre></div>
 
 
 <h4>运行syncdb</h4>
 <p>需要将manage.py拷到/opt/graphite/webapp/下</p>
-<div class="highlight"><pre>    cp /usr/local/lib/python2.7/dist-packages/django/conf/project_template/manage.py /opt/graphite/webapp/
+<div class="highlight"><pre>cp /usr/local/lib/python2.7/dist-packages/django/conf/project_template/manage.py /opt/graphite/webapp/
 </pre></div>
 
 
 <p>运行syncdb</p>
-<div class="highlight"><pre>    <span class="nb">cd</span> /opt/graphite/webapp/
-    python manage.py syncdb
+<div class="highlight"><pre><span class="nb">cd</span> /opt/graphite/webapp/
+python manage.py syncdb
 </pre></div>
 
 
 <h4>安装和配置nginx</h4>
 <p>安装nginx</p>
-<div class="highlight"><pre>    sudo apt-get install nginx
+<div class="highlight"><pre>sudo apt-get install nginx
 </pre></div>
 
 
@@ -186,13 +186,13 @@ Ubuntu 12.04.4 LTS on AWS EC2, python2.7.3</p>
 <blockquote>
 <p>这里的配置是给graphite原生web界面单开一个端口, 如果只用grafana做前端则不需要这些配置</p>
 </blockquote>
-<div class="highlight"><pre>    <span class="c"># 创建graphite配置</span>
-    sudo vim /etc/nginx/sites-enabled/graphite
+<div class="highlight"><pre><span class="c"># 创建graphite配置</span>
+sudo vim /etc/nginx/sites-enabled/graphite
 </pre></div>
 
 
 <p>我的配置文件如下:</p>
-<div class="highlight"><pre>    <span class="n">server</span> <span class="p">{</span>
+<div class="highlight"><pre><span class="n">server</span> <span class="p">{</span>
         <span class="n">listen</span>        <span class="mi">8000</span><span class="p">;</span>
         <span class="n">server_name</span>   <span class="n">your</span><span class="p">.</span><span class="n">server</span><span class="p">.</span><span class="n">name</span><span class="p">;</span>
         <span class="n">charset</span>       <span class="n">utf</span><span class="o">-</span><span class="mi">8</span><span class="p">;</span>
@@ -217,46 +217,46 @@ Ubuntu 12.04.4 LTS on AWS EC2, python2.7.3</p>
             <span class="n">include</span> <span class="n">uwsgi_params</span><span class="p">;</span>
             <span class="n">uwsgi_pass</span>      <span class="mf">127.0.0.1</span><span class="o">:</span><span class="mi">3031</span><span class="p">;</span>
         <span class="p">}</span>
-    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 
 
 <p>载入新配置并运行nginx</p>
-<div class="highlight"><pre>    sudo nginx -t <span class="c">#检查配置</span>
-    sudo /etc/ini.d/nginx reload
+<div class="highlight"><pre>sudo nginx -t <span class="c">#检查配置</span>
+sudo /etc/ini.d/nginx reload
 </pre></div>
 
 
 <p>安装uwsgi</p>
-<div class="highlight"><pre>    sudo apt-get install uwsgi
-    sudo pip install uwsgi
+<div class="highlight"><pre>sudo apt-get install uwsgi
+sudo pip install uwsgi
 </pre></div>
 
 
 <p>配置uwsgi</p>
-<div class="highlight"><pre>    <span class="c"># 在/opt/graphite/webapp/graphite.ini</span>
-    sudo vim /opt/graphite/webapp/graphite.ini
+<div class="highlight"><pre><span class="c"># 在/opt/graphite/webapp/graphite.ini</span>
+sudo vim /opt/graphite/webapp/graphite.ini
 </pre></div>
 
 
 <p>我的配置如下：</p>
-<div class="highlight"><pre>    <span class="p">[</span><span class="n">uwsgi</span><span class="p">]</span>
-    <span class="n">processes</span> <span class="o">=</span> <span class="mi">2</span>
-    <span class="n">socket</span> <span class="o">=</span> <span class="mf">127.0.0.1</span><span class="o">:</span><span class="mi">3031</span>
-    <span class="n">gid</span> <span class="o">=</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span>
-    <span class="n">uid</span> <span class="o">=</span> <span class="n">www</span><span class="o">-</span><span class="n">data</span>
-    <span class="n">chdir</span> <span class="o">=</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">graphite</span><span class="o">/</span><span class="n">webapp</span><span class="o">/</span><span class="n">graphite</span>
-    <span class="n">module</span> <span class="o">=</span> <span class="n">wsgi</span>
-    <span class="n">buffer</span><span class="o">-</span><span class="n">size</span> <span class="o">=</span> <span class="mi">65536</span>
-    <span class="n">pidfile</span> <span class="o">=</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">uwsgi</span><span class="p">.</span><span class="n">pid</span>
-    <span class="n">chmod</span><span class="o">-</span><span class="n">socket</span> <span class="o">=</span> <span class="mi">666</span>
-    <span class="n">pythonpath</span> <span class="o">=</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">graphite</span><span class="o">/</span><span class="n">webapp</span>
-    <span class="n">daemonize</span> <span class="o">=</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">graphite</span><span class="p">.</span><span class="n">log</span>
+<div class="highlight"><pre><span class="k">[uwsgi]</span>
+<span class="na">processes</span> <span class="o">=</span> <span class="s">2</span>
+<span class="na">socket</span> <span class="o">=</span> <span class="s">127.0.0.1:3031</span>
+<span class="na">gid</span> <span class="o">=</span> <span class="s">www-data</span>
+<span class="na">uid</span> <span class="o">=</span> <span class="s">www-data</span>
+<span class="na">chdir</span> <span class="o">=</span> <span class="s">/opt/graphite/webapp/graphite</span>
+<span class="na">module</span> <span class="o">=</span> <span class="s">wsgi</span>
+<span class="na">buffer-size</span> <span class="o">=</span> <span class="s">65536</span>
+<span class="na">pidfile</span> <span class="o">=</span> <span class="s">/tmp/uwsgi.pid</span>
+<span class="na">chmod-socket</span> <span class="o">=</span> <span class="s">666</span>
+<span class="na">pythonpath</span> <span class="o">=</span> <span class="s">/opt/graphite/webapp</span>
+<span class="na">daemonize</span> <span class="o">=</span> <span class="s">/var/log/graphite.log</span>
 </pre></div>
 
 
 <p>运行uwsgi</p>
-<div class="highlight"><pre>    uwsgi --ini /opt/graphite/webapp/graphite.ini
+<div class="highlight"><pre>uwsgi --ini /opt/graphite/webapp/graphite.ini
 </pre></div>
 
 
@@ -264,45 +264,45 @@ Ubuntu 12.04.4 LTS on AWS EC2, python2.7.3</p>
 <hr />
 <h3>安装和配置 grafana</h3>
 <h4>下载grafana源码包</h4>
-<div class="highlight"><pre>    git clone https://github.com/grafana/grafana.git
+<div class="highlight"><pre>git clone https://github.com/grafana/grafana.git
 </pre></div>
 
 
 <h4>安装nodejs和npm</h4>
-<div class="highlight"><pre>    sudo apt-get install python-software-properties
-    sudo apt-add-repository ppa:chris-lea/node.js
-    sudo apt-get update
-    sudo apt-get install nodejs
+<div class="highlight"><pre>sudo apt-get install python-software-properties
+sudo apt-add-repository ppa:chris-lea/node.js
+sudo apt-get update
+sudo apt-get install nodejs
 </pre></div>
 
 
 <p>检查一下nodejs和npm</p>
-<div class="highlight"><pre>    nodejs -v <span class="c"># 版本要v0.10 +</span>
-    npm -v    <span class="c"># 检查npm是否被安装</span>
+<div class="highlight"><pre>nodejs -v <span class="c"># 版本要v0.10 +</span>
+npm -v    <span class="c"># 检查npm是否被安装</span>
 </pre></div>
 
 
 <p>如果npm没有被安装</p>
-<div class="highlight"><pre>    sudo apt-get install npm
+<div class="highlight"><pre>sudo apt-get install npm
 </pre></div>
 
 
 <h4>安装grafana</h4>
-<div class="highlight"><pre>    npm install <span class="c"># 在grafana文件夹里</span>
-    npm install -g grunt-cli
-    grunt <span class="o">(</span>runt default task that will generate css files<span class="o">)</span>
-    grunt build <span class="o">(</span>creates optimized &amp; minified release<span class="o">)</span>
+<div class="highlight"><pre>npm install <span class="c"># 在grafana文件夹里</span>
+npm install -g grunt-cli
+grunt <span class="o">(</span>runt default task that will generate css files<span class="o">)</span>
+grunt build <span class="o">(</span>creates optimized &amp; minified release<span class="o">)</span>
 </pre></div>
 
 
 <h4>配置grafana</h4>
 <p>拷贝grafana配置</p>
-<div class="highlight"><pre>    cp /path/to/grafana/src/config.example.js /path/to/grafana/src/config.js
+<div class="highlight"><pre>cp /path/to/grafana/src/config.example.js /path/to/grafana/src/config.js
 </pre></div>
 
 
 <p>配置config.js</p>
-<div class="highlight"><pre>    <span class="c1">//去掉注释并修改为</span>
+<div class="highlight"><pre><span class="c1">//去掉注释并修改为</span>
     <span class="nx">datasources</span><span class="o">:</span> <span class="p">{</span>
       <span class="nx">graphite</span><span class="o">:</span> <span class="p">{</span>
         <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;graphite&#39;</span><span class="p">,</span>
@@ -321,26 +321,26 @@ Ubuntu 12.04.4 LTS on AWS EC2, python2.7.3</p>
 <hr />
 <h4>安装elasticsearch</h4>
 <p>如果没有java, 安装java</p>
-<div class="highlight"><pre>    sudo apt-get update
-    sudo apt-get upgrade
-    sudo apt-get install software-properties-common
-    sudo add-apt-repository ppa:webupd8team/java
-    sudo apt-get update
-    sudo apt-get install oracle-java7-installer
+<div class="highlight"><pre>sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install software-properties-common
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt-get update
+sudo apt-get install oracle-java7-installer
 </pre></div>
 
 
 <p>加入elasticsearch源, 并安装</p>
-<div class="highlight"><pre>    wget -O - http://packages.elasticsearch.org/GPG-KEY-elasticsearch | apt-key add -
-    sudo <span class="nb">echo</span> <span class="s2">&quot;deb http://packages.elasticsearch.org/elasticsearch/1.1/debian stable main&quot;</span> &gt;&gt; /etc/apt/sources.list
-    sudo apt-get update
-    sudo apt-get install elasticsearch
+<div class="highlight"><pre>wget -O - http://packages.elasticsearch.org/GPG-KEY-elasticsearch | apt-key add -
+sudo <span class="nb">echo</span> <span class="s2">&quot;deb http://packages.elasticsearch.org/elasticsearch/1.1/debian stable main&quot;</span> &gt;&gt; /etc/apt/sources.list
+sudo apt-get update
+sudo apt-get install elasticsearch
 </pre></div>
 
 
 <p>启动elasticsearch服务, 并测试</p>
-<div class="highlight"><pre>    sudo /etc/init.d/elasticsearch start
-    curl -X GET <span class="s1">&#39;http://localhost:9200&#39;</span>
+<div class="highlight"><pre>sudo /etc/init.d/elasticsearch start
+curl -X GET <span class="s1">&#39;http://localhost:9200&#39;</span>
     <span class="o">{</span>
         <span class="s2">&quot;status&quot;</span> : 200,
         <span class="s2">&quot;name&quot;</span> : <span class="s2">&quot;Carl \&quot;Crusher\&quot; Creel&quot;</span>,
@@ -352,13 +352,13 @@ Ubuntu 12.04.4 LTS on AWS EC2, python2.7.3</p>
         <span class="s2">&quot;lucene_version&quot;</span> : <span class="s2">&quot;4.9&quot;</span>
         <span class="o">}</span>,
         <span class="s2">&quot;tagline&quot;</span> : <span class="s2">&quot;You Know, for Search&quot;</span>
-<span class="o">}</span>
+    <span class="o">}</span>
 </pre></div>
 
 
 <h4>配置ningx</h4>
 <p>创建grafana配置</p>
-<div class="highlight"><pre>    sudo vim /etc/nginx/sites-enabled/grafana
+<div class="highlight"><pre>sudo vim /etc/nginx/sites-enabled/grafana
 </pre></div>
 
 
@@ -417,23 +417,23 @@ Ubuntu 12.04.4 LTS on AWS EC2, python2.7.3</p>
 
 <p><strong>注意</strong> 这里用到了Basic Authentication, 关于NginX的Basic Authentication可以参考<a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-http-authentication-with-nginx-on-ubuntu-12-10">这里</a>. 当然你也可以添加SSL认证.</p>
 <h4>检查配置和reload Nginx</h4>
-<div class="highlight"><pre>    sudo nginx -t
-    sudo /etc/ini.d/nginx reload
+<div class="highlight"><pre>sudo nginx -t
+sudo /etc/ini.d/nginx reload
 </pre></div>
 
 
 <hr />
 <h3>安装和配置CollectD</h3>
 <h4>下载源码包</h4>
-<div class="highlight"><pre>    git clone https://github.com/collectd/collectd.git
+<div class="highlight"><pre>git clone https://github.com/collectd/collectd.git
 </pre></div>
 
 
 <h4>编译和安装</h4>
-<div class="highlight"><pre>    <span class="nb">cd</span> /path/to/collectd
-    ./configure
-    sudo make
-    sudo make install
+<div class="highlight"><pre><span class="nb">cd</span> /path/to/collectd
+./configure
+sudo make
+sudo make install
 </pre></div>
 
 
@@ -444,16 +444,16 @@ Ubuntu 12.04.4 LTS on AWS EC2, python2.7.3</p>
 
 
 <h4>创建配置文件</h4>
-<div class="highlight"><pre>    <span class="n">sudo</span> <span class="n">mkdir</span> <span class="n">mkdir</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">collectd</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">collectd</span><span class="p">.</span><span class="n">d</span>
-    <span class="n">sudo</span> <span class="n">vim</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">collectd</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">collectd</span><span class="p">.</span><span class="n">d</span><span class="o">/</span><span class="n">graphite</span><span class="p">.</span><span class="n">conf</span>
+<div class="highlight"><pre><span class="n">sudo</span> <span class="n">mkdir</span> <span class="n">mkdir</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">collectd</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">collectd</span><span class="p">.</span><span class="n">d</span>
+<span class="n">sudo</span> <span class="n">vim</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">collectd</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">collectd</span><span class="p">.</span><span class="n">d</span><span class="o">/</span><span class="n">graphite</span><span class="p">.</span><span class="n">conf</span>
 </pre></div>
 
 
 <h4>加入以下配置, 修改你的graphite server</h4>
-<div class="highlight"><pre>    <span class="nt">&lt;LoadPlugin</span> <span class="err">&quot;python&quot;</span><span class="nt">&gt;</span>
+<div class="highlight"><pre><span class="nt">&lt;LoadPlugin</span> <span class="err">&quot;python&quot;</span><span class="nt">&gt;</span>
         Globals true
-    <span class="nt">&lt;/LoadPlugin&gt;</span>
-    <span class="nt">&lt;Plugin</span> <span class="err">&quot;python&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/LoadPlugin&gt;</span>
+<span class="nt">&lt;Plugin</span> <span class="err">&quot;python&quot;</span><span class="nt">&gt;</span>
         ModulePath &quot;/opt/collectd-plugins/&quot;
         Import &quot;carbon_writer&quot;
         <span class="nt">&lt;Module</span> <span class="err">&quot;carbon_writer&quot;</span><span class="nt">&gt;</span>
@@ -463,24 +463,24 @@ Ubuntu 12.04.4 LTS on AWS EC2, python2.7.3</p>
             LowercaseMetricNames true
             TypesDB &quot;/opt/collectd/share/collectd/types.db&quot;
         <span class="nt">&lt;/Module&gt;</span>
-    <span class="nt">&lt;/Plugin&gt;</span>
+<span class="nt">&lt;/Plugin&gt;</span>
 </pre></div>
 
 
 <h4>安装collectd-carbon插件</h4>
-<div class="highlight"><pre>    sudo git clone https://github.com/indygreg/collectd-carbon.git /opt/collectd-plugins
+<div class="highlight"><pre>sudo git clone https://github.com/indygreg/collectd-carbon.git /opt/collectd-plugins
 </pre></div>
 
 
 <p>默认会开启cpu, load, memory, interface的监控. 如果开启更多监控plugins, 参考<a href="https://collectd.org/documentation/manpages/collectd.conf.5.shtml">官方wiki</a></p>
 <h3>运行各组件</h3>
 <p>在graphite server</p>
-<div class="highlight"><pre>    sudo /opt/graphite/bin/carbon-cache
+<div class="highlight"><pre>sudo /opt/graphite/bin/carbon-cache
 </pre></div>
 
 
 <p>在监控的server</p>
-<div class="highlight"><pre>    sudo /opt/collectd/sbin/collectd
+<div class="highlight"><pre>sudo /opt/collectd/sbin/collectd
 </pre></div>
 
 

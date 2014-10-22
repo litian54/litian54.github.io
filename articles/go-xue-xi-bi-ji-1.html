@@ -65,26 +65,26 @@
 <p>如果两个go源码文件的package声明是一样的，则可以互相调用各源码文件定义的函数：</p>
 </li>
 </ul>
-<div class="highlight"><pre>    <span class="c1">//bubblesort.go</span>
-    <span class="n">package</span> <span class="n">bubblesort</span>
-    <span class="n">func</span> <span class="nf">BubbleSort</span><span class="p">(</span><span class="n">value</span> <span class="p">[]</span><span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span class="c1">//bubblesort.go</span>
+<span class="n">package</span> <span class="n">bubblesort</span>
+<span class="n">func</span> <span class="nf">BubbleSort</span><span class="p">(</span><span class="n">value</span> <span class="p">[]</span><span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
     <span class="p">...</span>
     <span class="c1">//具体函数实现</span>
     <span class="p">...</span>
-    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 
 
-<div class="highlight"><pre>    <span class="c1">//bubblesort_test.go</span>
-    <span class="n">package</span> <span class="n">bubblesort</span>
+<div class="highlight"><pre><span class="c1">//bubblesort_test.go</span>
+<span class="n">package</span> <span class="n">bubblesort</span>
 
-    <span class="n">import</span> <span class="s">&quot;testing&quot;</span>
+<span class="n">import</span> <span class="s">&quot;testing&quot;</span>
 
-    <span class="n">fun</span> <span class="n">TestBubbleSort</span><span class="p">(</span><span class="n">t</span> <span class="o">*</span><span class="n">testing</span><span class="p">.</span><span class="n">T</span><span class="p">)</span> <span class="p">{</span>
-      <span class="n">values</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">int</span><span class="p">{</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">}</span>
-      <span class="n">BubbleSort</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>  <span class="c1">// package声明都为bubblesort，所以这样可以直接调用BubbleSort函数</span>
+<span class="n">fun</span> <span class="n">TestBubbleSort</span><span class="p">(</span><span class="n">t</span> <span class="o">*</span><span class="n">testing</span><span class="p">.</span><span class="n">T</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">values</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">int</span><span class="p">{</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">}</span>
+  <span class="n">BubbleSort</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>  <span class="c1">// package声明都为bubblesort，所以这样可以直接调用BubbleSort函数</span>
       <span class="p">...</span>
-    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 
 
@@ -92,13 +92,13 @@
 <li>以大写字母开头的常量在包外可见！</li>
 <li>枚举</li>
 </ul>
-<div class="highlight"><pre>    <span class="k">const</span> <span class="p">(</span>
-          <span class="n">Sunday</span> <span class="o">=</span> <span class="n">itoa</span>
-          <span class="n">Monday</span>
-          <span class="n">Tuesday</span>
-          <span class="p">...</span>
-          <span class="n">numberOfDays</span> <span class="c1">// 这个常量没有导出</span>
-    <span class="p">)</span>
+<div class="highlight"><pre><span class="k">const</span> <span class="p">(</span>
+  <span class="n">Sunday</span> <span class="o">=</span> <span class="n">itoa</span>
+  <span class="n">Monday</span>
+  <span class="n">Tuesday</span>
+  <span class="p">...</span>
+  <span class="n">numberOfDays</span> <span class="c1">// 这个常量没有导出</span>
+<span class="p">)</span>
 </pre></div>
 
 
@@ -108,11 +108,11 @@
 <li>fvalue := 12.0 会被直接设为float64</li>
 <li>不能用==来判断浮点数是否相等，结果并不精确，推荐的替代方案：</li>
 </ul>
-<div class="highlight"><pre>    <span class="n">import</span> <span class="s">&quot;math&quot;</span>
-    <span class="c1">//p为用户自定义的比较精度，比如0.00001</span>
-    <span class="n">func</span> <span class="n">IsEqual</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">,</span> <span class="n">p</span> <span class="n">float64</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="n">math</span><span class="p">.</span><span class="n">Fdim</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">p</span>
-    <span class="p">}</span>
+<div class="highlight"><pre><span class="n">import</span> <span class="s">&quot;math&quot;</span>
+<span class="c1">//p为用户自定义的比较精度，比如0.00001</span>
+<span class="n">func</span> <span class="n">IsEqual</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">,</span> <span class="n">p</span> <span class="n">float64</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">math</span><span class="p">.</span><span class="n">Fdim</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">p</span>
+<span class="p">}</span>
 </pre></div>
 
 
@@ -120,9 +120,9 @@
 <li>首字母大写的变量才能在包外导入</li>
 <li>fmt.Println()打印字符，字符串</li>
 </ul>
-<div class="highlight"><pre>    <span class="n">str</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">Hello</span> <span class="n">world</span><span class="err">&#39;</span>
-    <span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="err">&#39;</span><span class="o">%</span><span class="n">s</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">str</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1">//‘H&#39;</span>
-    <span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">str</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1">//72 根据下表取字符串，类型为byte</span>
+<div class="highlight"><pre><span class="n">str</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">Hello</span> <span class="n">world</span><span class="err">&#39;</span>
+<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="err">&#39;</span><span class="o">%</span><span class="n">s</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">str</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1">//‘H&#39;</span>
+<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">str</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1">//72 根据下表取字符串，类型为byte</span>
 </pre></div>
 
 
@@ -138,62 +138,62 @@
 <strong>Quesiton:</strong></p>
 </li>
 </ul>
-<div class="highlight"><pre>    <span class="n">array</span> <span class="o">:=</span> <span class="p">[...]</span><span class="n">float64</span><span class="p">{</span><span class="mf">7.0</span><span class="p">,</span> <span class="mf">8.5</span><span class="p">,</span> <span class="mf">9.1</span><span class="p">}</span>
-    <span class="n">x</span> <span class="o">:=</span> <span class="n">Sum</span><span class="p">(</span><span class="o">&amp;</span><span class="n">array</span><span class="p">)</span>  <span class="c1">// Note the explicit address-of operator</span>
+<div class="highlight"><pre><span class="n">array</span> <span class="o">:=</span> <span class="p">[...]</span><span class="n">float64</span><span class="p">{</span><span class="mf">7.0</span><span class="p">,</span> <span class="mf">8.5</span><span class="p">,</span> <span class="mf">9.1</span><span class="p">}</span>
+<span class="n">x</span> <span class="o">:=</span> <span class="n">Sum</span><span class="p">(</span><span class="o">&amp;</span><span class="n">array</span><span class="p">)</span>  <span class="c1">// Note the explicit address-of operator</span>
 </pre></div>
 
 
 <ul>
 <li>初始化slice</li>
 </ul>
-<div class="highlight"><pre>    <span class="nx">mySlice</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="c1">//初始5个元素，元素初始值为0，并预留10个元素</span>
+<div class="highlight"><pre><span class="nx">mySlice</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="c1">//初始5个元素，元素初始值为0，并预留10个元素</span>
 </pre></div>
 
 
 <ul>
 <li>map查找</li>
 </ul>
-<div class="highlight"><pre>    <span class="n">value</span><span class="p">,</span> <span class="n">ok</span> <span class="o">:=</span> <span class="n">myMap</span><span class="p">[</span><span class="s">&quot;1234&quot;</span><span class="p">]</span>
-                 <span class="k">if</span> <span class="n">ok</span> <span class="p">{</span><span class="c1">//查到了</span>
-                 <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="err">没找到</span>
-                 <span class="p">}</span>
+<div class="highlight"><pre><span class="n">value</span><span class="p">,</span> <span class="n">ok</span> <span class="o">:=</span> <span class="n">myMap</span><span class="p">[</span><span class="s">&quot;1234&quot;</span><span class="p">]</span>
+             <span class="k">if</span> <span class="n">ok</span> <span class="p">{</span><span class="c1">//查到了</span>
+             <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="err">没找到</span>
+               <span class="p">}</span>
 </pre></div>
 
 
 <ul>
 <li>为类型添加方法</li>
 </ul>
-<div class="highlight"><pre>    <span class="n">package</span> <span class="n">main</span>
-    <span class="n">import</span> <span class="s">&quot;fmt&quot;</span>
-    <span class="n">type</span> <span class="n">Integer</span> <span class="kt">int</span>
-    <span class="c1">// 这里是只传递，不会改变值大小</span>
-    <span class="n">func</span> <span class="p">(</span><span class="n">a</span> <span class="n">Integer</span><span class="p">)</span> <span class="n">Less</span><span class="p">(</span><span class="n">b</span> <span class="n">Integer</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
-          <span class="k">return</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="n">b</span>
+<div class="highlight"><pre><span class="n">package</span> <span class="n">main</span>
+<span class="n">import</span> <span class="s">&quot;fmt&quot;</span>
+<span class="n">type</span> <span class="n">Integer</span> <span class="kt">int</span>
+<span class="c1">// 这里是只传递，不会改变值大小</span>
+<span class="n">func</span> <span class="p">(</span><span class="n">a</span> <span class="n">Integer</span><span class="p">)</span> <span class="n">Less</span><span class="p">(</span><span class="n">b</span> <span class="n">Integer</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="n">b</span>
+<span class="p">}</span>
+<span class="c1">// 这里是指针传递，值会改变</span>
+<span class="n">func</span> <span class="p">(</span><span class="n">a</span> <span class="o">*</span><span class="n">Integer</span><span class="p">)</span> <span class="n">Add</span><span class="p">(</span><span class="n">b</span> <span class="n">Integer</span><span class="p">)</span> <span class="p">{</span>
+    <span class="o">*</span><span class="n">a</span> <span class="o">+=</span> <span class="n">b</span>
+<span class="p">}</span>
+<span class="c1">//调用</span>
+<span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">var</span> <span class="n">a</span> <span class="n">Integer</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">a</span><span class="p">.</span><span class="n">Less</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+       <span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s">&quot;less 2&quot;</span><span class="p">)</span>
     <span class="p">}</span>
-    <span class="c1">// 这里是指针传递，值会改变</span>
-    <span class="n">func</span> <span class="p">(</span><span class="n">a</span> <span class="o">*</span><span class="n">Integer</span><span class="p">)</span> <span class="n">Add</span><span class="p">(</span><span class="n">b</span> <span class="n">Integer</span><span class="p">)</span> <span class="p">{</span>
-          <span class="o">*</span><span class="n">a</span> <span class="o">+=</span> <span class="n">b</span>
-    <span class="p">}</span>
-    <span class="c1">//调用</span>
-    <span class="n">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
-        <span class="n">var</span> <span class="n">a</span> <span class="n">Integer</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="k">if</span> <span class="n">a</span><span class="p">.</span><span class="n">Less</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
-           <span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s">&quot;less 2&quot;</span><span class="p">)</span>
-        <span class="p">}</span>
-        <span class="n">a</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-           <span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="s">&quot;a=&quot;</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
-   <span class="p">}</span>
+    <span class="n">a</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="s">&quot;a=&quot;</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+<span class="p">}</span>
 </pre></div>
 
 
 <ul>
 <li>值传递和引用传递</li>
 </ul>
-<div class="highlight"><pre>    <span class="n">var</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="kt">int</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">}</span>
-    <span class="n">var</span> <span class="n">b</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">a</span>
-    <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">++</span>
-    <span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="o">*</span><span class="n">b</span><span class="p">)</span>
-    <span class="c1">//运行结果 [1 3 3] [1 3 3]</span>
+<div class="highlight"><pre><span class="n">var</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="kt">int</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">}</span>
+<span class="n">var</span> <span class="n">b</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">a</span>
+<span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">++</span>
+<span class="n">fmt</span><span class="p">.</span><span class="n">Println</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="o">*</span><span class="n">b</span><span class="p">)</span>
+<span class="c1">//运行结果 [1 3 3] [1 3 3]</span>
 </pre></div>
 
 
